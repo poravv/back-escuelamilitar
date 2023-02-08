@@ -1,0 +1,24 @@
+{
+  "name": "servicio-rest-empy",
+  "version": "1.0.0",
+  "description": "Servicio rest para comunicar datos a cliente ",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon src/server.js",
+    "stop": "nodemon server"
+  },
+  "author": "Andres Vera",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "md5": "^2.3.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.1.1",
+    "nodemon": "^2.0.20",
+    "sequelize": "^6.28.0"
+  }
+}
