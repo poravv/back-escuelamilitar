@@ -1,41 +1,40 @@
 const{DataTypes}=require("sequelize")
 const database = require("../database")
-const ciudad=require("./model_ciudad")
+const persona=require("./model_persona")
 
-const sucursal=database.define("sucursal",{
-    idsucursal:{
+const faltas=database.define("faltas",{
+    idfaltas:{
         type:DataTypes.INTEGER,
         autoIncrement:true,
         primaryKey:true
     },
-    sucursal:{
+    registro:{
         type:DataTypes.STRING,
         allowNull:false
     },
-    ruc:{
-        type:DataTypes.STRING,
+    fecha:{
+        type:DataTypes.DATE,
         allowNull:false
     },
-    direccion:{
+    ausen:{
         type: DataTypes.STRING,
         allowNull:false
     },
-    estado:{
+    descuento:{
         type: DataTypes.STRING,
         allowNull:false
     },
-    idciudad: {
+    idpersona: {
         type: DataTypes.INTEGER,
         allowNull:false
     }
 },{
-    tableName:"Sucursal",
+    tableName:"Faltas",
     timestamps:false
 })
 
-sucursal.hasOne(ciudad,{
-    foreignKey:"idciudad",
-    primaryKey:"idciudad"
+faltas.hasOne(persona,{
+    foreignKey:"idpersona",
+    primaryKey:"idpersona"
 })
-
-module.exports=sucursal
+module.exports=faltas
