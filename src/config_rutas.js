@@ -24,26 +24,26 @@ const turno = require('./servicios/turno')
 const usuario = require('./servicios/usuario')
 
 
-rutas.use('/automot/api/ciudad',ciudad);
-rutas.use('/automot/api/anho_lectivo',anho_lectivo);
-rutas.use('/automot/api/asistencia',asistencia);
-rutas.use('/automot/api/convocatoria',convocatoria);
-rutas.use('/automot/api/cuotas',cuotas);
-rutas.use('/automot/api/curso',curso);
-rutas.use('/automot/api/det_asistencia',det_asistencia);
-rutas.use('/automot/api/det_planificacion',det_planificacion);
-rutas.use('/automot/api/detalle_documentos',detalle_documentos);
-rutas.use('/automot/api/documentos',documentos);
-rutas.use('/automot/api/evaluaciones',evaluaciones);
-rutas.use('/automot/api/faltas',faltas);
-rutas.use('/automot/api/grados_arma',grados_arma);
-rutas.use('/automot/api/inscripcion',inscripcion);
-rutas.use('/automot/api/instructor',instructor);
-rutas.use('/automot/api/materia',materia);
-rutas.use('/automot/api/persona',persona);
-rutas.use('/automot/api/planificacion',planificacion);
-rutas.use('/automot/api/sucursal',sucursal);
-rutas.use('/automot/api/turno',turno);
-rutas.use('/automot/api/usuario',usuario);
+rutas.use('/empy/api/ciudad',ciudad);
+rutas.use('/empy/api/anho_lectivo',anho_lectivo);
+rutas.use('/empy/api/asistencia',asistencia);
+rutas.use('/empy/api/convocatoria',convocatoria);
+rutas.use('/empy/api/cuotas',cuotas);
+rutas.use('/empy/api/curso',curso);
+rutas.use('/empy/api/det_asistencia',det_asistencia);
+rutas.use('/empy/api/det_planificacion',det_planificacion);
+rutas.use('/empy/api/detalle_documentos',detalle_documentos);
+rutas.use('/empy/api/documentos',documentos);
+rutas.use('/empy/api/evaluaciones',evaluaciones);
+rutas.use('/empy/api/faltas',faltas);
+rutas.use('/empy/api/grados_arma',grados_arma);
+rutas.use('/empy/api/inscripcion',inscripcion);
+rutas.use('/empy/api/instructor',instructor);
+rutas.use('/empy/api/materia',materia);
+rutas.use('/empy/api/persona',persona);
+rutas.use('/empy/api/planificacion',planificacion);
+rutas.use('/empy/api/sucursal',sucursal);
+rutas.use('/empy/api/turno',turno);
+rutas.use('/empy/api/usuario',usuario);
 
 module.exports = rutas;
