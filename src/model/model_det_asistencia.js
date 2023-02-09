@@ -5,14 +5,19 @@ const asistencia=require("./model_asistencia")
 const inscripcion=require("./model_inscripcion")
 
 const det_asistencia=database.define("det_asistencia",{
+    idinscripcion:{
+        type:DataTypes.INTEGER,
+        //autoIncrement:true,
+        primaryKey:true
+    },
     idpersona:{
         type:DataTypes.INTEGER,
-        autoIncrement:true,
+        //autoIncrement:true,
         primaryKey:true
     },
     idasistencia:{
         type:DataTypes.INTEGER,
-        autoIncrement:true,
+        //autoIncrement:true,
         primaryKey:true
     },
     asistencia:{

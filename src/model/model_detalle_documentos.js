@@ -3,7 +3,7 @@ const database = require('../database.js')
 const documentos=require("./model_documentos")
 const persona=require("./model_persona")
 
-const persona = database.define("detalle_documentos",{
+const detalle_documentos = database.define("detalle_documentos",{
     observacion:{
         type:DataTypes.STRING,
         allowNull:false
@@ -35,12 +35,12 @@ const persona = database.define("detalle_documentos",{
     timestamps:false
 })
 
-persona.hasOne(persona,{
+detalle_documentos.hasOne(persona,{
     foreignKey:"idpersona",
     primaryKey:"idpersona"
 });
 
-persona.hasOne(documentos,{
+detalle_documentos.hasOne(documentos,{
     foreignKey:"iddocumentos",
     primaryKey:"iddocumentos"
 });

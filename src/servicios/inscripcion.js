@@ -9,7 +9,7 @@ require("dotenv").config()
 
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const inscripciones = await database.query('select * from inscripcion order by descripcion asc',{type: DataTypes.SELECT})
+    const inscripciones = await database.query('select * from inscripcion',{type: DataTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {

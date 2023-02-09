@@ -11,7 +11,7 @@ const inscripcion=database.define("inscripcion",{
     },
     idpersona:{
         type:DataTypes.INTEGER,
-        autoIncrement:true,
+        //autoIncrement:true,
         primaryKey:true
     },
     estado:{
