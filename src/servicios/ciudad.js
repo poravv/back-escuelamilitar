@@ -82,7 +82,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
                 })
             }
         })
-    } catch (error) {
+    } catch (er) {
         res.json({error: "error catch"});
         console.log('Rollback')
         t.rollback();
@@ -108,7 +108,7 @@ routes.put('/put/:idciudad', verificaToken, async (req, res) => {
                 })
             }
         })
-    } catch (error) {
+    } catch (er) {
         res.json({error: "error catch"});
         console.log('Rollback update')
         t.rollback();
@@ -135,7 +135,7 @@ routes.delete('/del/:idciudad', verificaToken, async (req, res) => {
                 })
             }
         })
-    } catch (error) {
+    } catch (er) {
         res.json({error: "error catch"});
         t.rollback();
     }

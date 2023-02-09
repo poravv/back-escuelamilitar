@@ -1,7 +1,7 @@
 const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
-const sucursal = require("../model/model_sucursal")
+const asistencia = require("../model/model_asistencia")
 const database = require('../database')
 const{DataTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
@@ -9,7 +9,7 @@ require("dotenv").config()
 
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const sucursales = await database.query('select * from sucursal order by descripcion asc',{type: DataTypes.SELECT})
+    const asistenciaes = await database.query('select * from asistencia order by descripcion asc',{type: DataTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -18,7 +18,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: sucursales
+                body: asistenciaes
             })
         }
     })
@@ -27,7 +27,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 routes.get('/get/', verificaToken, async (req, res) => {
     
-    const sucursales = await sucursal.findAll();
+    const asistenciaes = await asistencia.findAll();
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -37,15 +37,15 @@ routes.get('/get/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: sucursales
+                body: asistenciaes
             })
         }
 
     })
 })
 
-routes.get('/get/:idsucursal', verificaToken, async (req, res) => {
-    const sucursales = await sucursal.findByPk(req.params.idsucursal)
+routes.get('/get/:idasistencia', verificaToken, async (req, res) => {
+    const asistenciaes = await asistencia.findByPk(req.params.idasistencia)
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});;
@@ -54,7 +54,7 @@ routes.get('/get/:idsucursal', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: sucursales
+                body: asistenciaes
             });
         }
 
@@ -66,7 +66,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
     
     try {
-        const sucursales = await sucursal.create(req.body, {
+        const asistenciaes = await asistencia.create(req.body, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -78,7 +78,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro almacenado",
                     authData: authData,
-                    body: sucursales
+                    body: asistenciaes
                 })
             }
         })
@@ -89,11 +89,11 @@ routes.post('/post/', verificaToken, async (req, res) => {
     }
 })
 
-routes.put('/put/:idsucursal', verificaToken, async (req, res) => {
+routes.put('/put/:idasistencia', verificaToken, async (req, res) => {
 
     const t = await database.transaction();
     try {
-        const sucursales = await sucursal.update(req.body, { where: { idsucursal: req.params.idsucursal } }, {
+        const asistenciaes = await asistencia.update(req.body, { where: { idasistencia: req.params.idasistencia } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -104,7 +104,7 @@ routes.put('/put/:idsucursal', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro actualizado",
                     authData: authData,
-                    body: sucursales
+                    body: asistenciaes
                 })
             }
         })
@@ -115,12 +115,12 @@ routes.put('/put/:idsucursal', verificaToken, async (req, res) => {
     }
 })
 
-routes.delete('/del/:idsucursal', verificaToken, async (req, res) => {
+routes.delete('/del/:idasistencia', verificaToken, async (req, res) => {
 
     const t = await  database.transaction();
     
     try {
-        const sucursales = await sucursal.destroy({ where: { idsucursal: req.params.idsucursal } }, {
+        const asistenciaes = await asistencia.destroy({ where: { idasistencia: req.params.idasistencia } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -131,7 +131,7 @@ routes.delete('/del/:idsucursal', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro eliminado",
                     authData: authData,
-                    body: sucursales
+                    body: asistenciaes
                 })
             }
         })

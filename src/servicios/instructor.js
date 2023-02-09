@@ -1,7 +1,7 @@
 const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
-const sucursal = require("../model/model_sucursal")
+const instructor = require("../model/model_instructor")
 const database = require('../database')
 const{DataTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
@@ -9,7 +9,7 @@ require("dotenv").config()
 
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const sucursales = await database.query('select * from sucursal order by descripcion asc',{type: DataTypes.SELECT})
+    const instructores = await database.query('select * from instructor order by descripcion asc',{type: DataTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -18,7 +18,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: sucursales
+                body: instructores
             })
         }
     })
@@ -27,7 +27,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 routes.get('/get/', verificaToken, async (req, res) => {
     
-    const sucursales = await sucursal.findAll();
+    const instructores = await instructor.findAll();
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -37,15 +37,15 @@ routes.get('/get/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: sucursales
+                body: instructores
             })
         }
 
     })
 })
 
-routes.get('/get/:idsucursal', verificaToken, async (req, res) => {
-    const sucursales = await sucursal.findByPk(req.params.idsucursal)
+routes.get('/get/:idinstructor', verificaToken, async (req, res) => {
+    const instructores = await instructor.findByPk(req.params.idinstructor)
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});;
@@ -54,7 +54,7 @@ routes.get('/get/:idsucursal', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: sucursales
+                body: instructores
             });
         }
 
@@ -66,7 +66,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
     
     try {
-        const sucursales = await sucursal.create(req.body, {
+        const instructores = await instructor.create(req.body, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -78,7 +78,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro almacenado",
                     authData: authData,
-                    body: sucursales
+                    body: instructores
                 })
             }
         })
@@ -89,11 +89,11 @@ routes.post('/post/', verificaToken, async (req, res) => {
     }
 })
 
-routes.put('/put/:idsucursal', verificaToken, async (req, res) => {
+routes.put('/put/:idinstructor', verificaToken, async (req, res) => {
 
     const t = await database.transaction();
     try {
-        const sucursales = await sucursal.update(req.body, { where: { idsucursal: req.params.idsucursal } }, {
+        const instructores = await instructor.update(req.body, { where: { idinstructor: req.params.idinstructor } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -104,7 +104,7 @@ routes.put('/put/:idsucursal', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro actualizado",
                     authData: authData,
-                    body: sucursales
+                    body: instructores
                 })
             }
         })
@@ -115,12 +115,12 @@ routes.put('/put/:idsucursal', verificaToken, async (req, res) => {
     }
 })
 
-routes.delete('/del/:idsucursal', verificaToken, async (req, res) => {
+routes.delete('/del/:idinstructor', verificaToken, async (req, res) => {
 
     const t = await  database.transaction();
     
     try {
-        const sucursales = await sucursal.destroy({ where: { idsucursal: req.params.idsucursal } }, {
+        const instructores = await instructor.destroy({ where: { idinstructor: req.params.idinstructor } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -131,7 +131,7 @@ routes.delete('/del/:idsucursal', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro eliminado",
                     authData: authData,
-                    body: sucursales
+                    body: instructores
                 })
             }
         })

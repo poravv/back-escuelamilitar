@@ -1,14 +1,15 @@
 const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
-const preg_seguridad = require("../model/model_preg_seguridad")
-const usuario = require("../model/model_usuario")
+const anho_lectivo = require("../model/model_anho_lectivo")
 const database = require('../database')
+const{DataTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
 require("dotenv").config()
 
-routes.get('/get/', verificaToken, async (req, res) => {
-    const preg_seguridads = await preg_seguridad.findAll({ include: usuario })
+
+routes.get('/getsql/', verificaToken, async (req, res) => {
+    const anho_lectivoes = await database.query('select * from anho_lectivo order by descripcion asc',{type: DataTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -17,53 +18,84 @@ routes.get('/get/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: preg_seguridads
+                body: anho_lectivoes
             })
         }
     })
 })
 
-routes.get('/get/:idpreg_seguridad', verificaToken, async (req, res) => {
-    const preg_seguridads = await preg_seguridad.findByPk(req.params.idpreg_seguridad, { include: usuario })
+
+routes.get('/get/', verificaToken, async (req, res) => {
+    
+    const anho_lectivoes = await anho_lectivo.findAll();
+
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({error: "Error ",err});
+            res.json({error: "Error ",err});;
         } else {
+            
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: preg_seguridads
+                body: anho_lectivoes
             })
         }
+
+    })
+})
+
+routes.get('/get/:idanho_lectivo', verificaToken, async (req, res) => {
+    const anho_lectivoes = await anho_lectivo.findByPk(req.params.idanho_lectivo)
+    jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+        if (err) {
+            res.json({error: "Error ",err});;
+        } else {
+            
+            res.json({
+                mensaje: "successfully",
+                authData: authData,
+                body: anho_lectivoes
+            });
+        }
+
+
     })
 })
 
 routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
+    
     try {
-        const preg_seguridads = await preg_seguridad.create(req.body, { transaction: t })
+        const anho_lectivoes = await anho_lectivo.create(req.body, {
+            transaction: t
+        });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
                 res.json({error: "Error ",err});
             } else {
                 t.commit();
+                console.log('Commitea')
                 res.json({
                     mensaje: "Registro almacenado",
                     authData: authData,
-                    body: preg_seguridads
+                    body: anho_lectivoes
                 })
             }
         })
-    } catch (error) {
+    } catch (er) {
         res.json({error: "error catch"});
+        console.log('Rollback')
         t.rollback();
     }
 })
 
-routes.put('/put/:idpreg_seguridad', verificaToken, async (req, res) => {
+routes.put('/put/:idanho_lectivo', verificaToken, async (req, res) => {
+
     const t = await database.transaction();
     try {
-        const preg_seguridads = await preg_seguridad.update(req.body, { where: { idpreg_seguridad: req.params.idpreg_seguridad }, transaction: t })
+        const anho_lectivoes = await anho_lectivo.update(req.body, { where: { idanho_lectivo: req.params.idanho_lectivo } }, {
+            transaction: t
+        });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
                 res.json({error: "Error ",err});
@@ -72,37 +104,42 @@ routes.put('/put/:idpreg_seguridad', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro actualizado",
                     authData: authData,
-                    body: preg_seguridads
+                    body: anho_lectivoes
                 })
             }
         })
-    } catch (error) {
+    } catch (er) {
         res.json({error: "error catch"});
+        console.log('Rollback update')
         t.rollback();
     }
-
 })
 
-routes.delete('/del/:idpreg_seguridad', verificaToken, async (req, res) => {
-    const t = await database.transaction();
+routes.delete('/del/:idanho_lectivo', verificaToken, async (req, res) => {
+
+    const t = await  database.transaction();
+    
     try {
-        const preg_seguridads = await preg_seguridad.destroy({ where: { idpreg_seguridad: req.params.idpreg_seguridad }, transaction: t })
+        const anho_lectivoes = await anho_lectivo.destroy({ where: { idanho_lectivo: req.params.idanho_lectivo } }, {
+            transaction: t
+        });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({error: "Error ",err});
+                res.json({error: "Error ",err});;
             } else {
                 t.commit();
                 res.json({
                     mensaje: "Registro eliminado",
                     authData: authData,
-                    body: preg_seguridads
+                    body: anho_lectivoes
                 })
             }
         })
-    } catch (error) {
+    } catch (er) {
         res.json({error: "error catch"});
         t.rollback();
     }
 })
+
 
 module.exports = routes;

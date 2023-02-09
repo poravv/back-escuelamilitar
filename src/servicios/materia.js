@@ -1,7 +1,7 @@
 const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
-const marca = require("../model/model_marca")
+const materia = require("../model/model_materia")
 const database = require('../database')
 const{DataTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
@@ -9,7 +9,7 @@ require("dotenv").config()
 
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const marcaes = await database.query('select * from marca order by descripcion asc',{type: DataTypes.SELECT})
+    const materiaes = await database.query('select * from materia order by descripcion asc',{type: DataTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -18,7 +18,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: marcaes
+                body: materiaes
             })
         }
     })
@@ -27,7 +27,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 routes.get('/get/', verificaToken, async (req, res) => {
     
-    const marcaes = await marca.findAll();
+    const materiaes = await materia.findAll();
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -37,15 +37,15 @@ routes.get('/get/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: marcaes
+                body: materiaes
             })
         }
 
     })
 })
 
-routes.get('/get/:idmarca', verificaToken, async (req, res) => {
-    const marcaes = await marca.findByPk(req.params.idmarca)
+routes.get('/get/:idmateria', verificaToken, async (req, res) => {
+    const materiaes = await materia.findByPk(req.params.idmateria)
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});;
@@ -54,7 +54,7 @@ routes.get('/get/:idmarca', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: marcaes
+                body: materiaes
             });
         }
 
@@ -66,7 +66,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
     
     try {
-        const marcaes = await marca.create(req.body, {
+        const materiaes = await materia.create(req.body, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -78,22 +78,22 @@ routes.post('/post/', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro almacenado",
                     authData: authData,
-                    body: marcaes
+                    body: materiaes
                 })
             }
         })
-    } catch (error) {
+    } catch (er) {
         res.json({error: "error catch"});
         console.log('Rollback')
         t.rollback();
     }
 })
 
-routes.put('/put/:idmarca', verificaToken, async (req, res) => {
+routes.put('/put/:idmateria', verificaToken, async (req, res) => {
 
     const t = await database.transaction();
     try {
-        const marcaes = await marca.update(req.body, { where: { idmarca: req.params.idmarca } }, {
+        const materiaes = await materia.update(req.body, { where: { idmateria: req.params.idmateria } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -104,23 +104,23 @@ routes.put('/put/:idmarca', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro actualizado",
                     authData: authData,
-                    body: marcaes
+                    body: materiaes
                 })
             }
         })
-    } catch (error) {
+    } catch (er) {
         res.json({error: "error catch"});
         console.log('Rollback update')
         t.rollback();
     }
 })
 
-routes.delete('/del/:idmarca', verificaToken, async (req, res) => {
+routes.delete('/del/:idmateria', verificaToken, async (req, res) => {
 
     const t = await  database.transaction();
     
     try {
-        const marcaes = await marca.destroy({ where: { idmarca: req.params.idmarca } }, {
+        const materiaes = await materia.destroy({ where: { idmateria: req.params.idmateria } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -131,11 +131,11 @@ routes.delete('/del/:idmarca', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro eliminado",
                     authData: authData,
-                    body: marcaes
+                    body: materiaes
                 })
             }
         })
-    } catch (error) {
+    } catch (er) {
         res.json({error: "error catch"});
         t.rollback();
     }
