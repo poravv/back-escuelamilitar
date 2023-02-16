@@ -14,20 +14,27 @@ const instructor=database.define("instructor",{
     },
     observacion:{
         type:DataTypes.STRING,
-        allowNull:false
+        //allowNull:false
     },
     idpersona: {
         type: DataTypes.INTEGER,
-        allowNull:false
+        allowNull:false,
+        //foreignKey:true,
+        required:true
     }
 },{
     tableName:"Instructor",
     timestamps:false
 })
 
+
 instructor.hasOne(persona,{
     foreignKey:"idpersona",
-    primaryKey:"idpersona"
-})
+    primaryKey:"idpersona",
+    sourceKey:"idpersona"
+    //as:"idpersona",
+}) 
+
+//Model.belongsTo(models.ModelName, { foreignKey: 'your_key', as:'your_identifier' });
 
 module.exports=instructor

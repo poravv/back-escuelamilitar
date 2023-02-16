@@ -2,7 +2,6 @@ const{DataTypes}=require("sequelize")
 const database=require("../database")
 
 const ciudad = database.define("grados_arma",{
-    
     idgrados_arma:{
         type:DataTypes.INTEGER,
         autoIncrement:true,

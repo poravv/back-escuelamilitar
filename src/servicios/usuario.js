@@ -19,22 +19,12 @@ routes.post('/login/', async (req, res) => {
         const rsusuario = await usuariomodel.findOne(
         {where: { usuario: usuario,password: md5(password) },
             include: [
-                { model: sucursal },
+                //{ model: sucursal },
                 { model: persona }
             ]
         })
 
-            try {
-                await database.query('CALL cargaInventarioCab(@a)');
-            } catch (error) {
-                console.log('Error cargaInventarioCab',error)
-            }
-
-        //console.log(rsusuario);
-        //console.log(rsusuario.length);
-
         if (rsusuario.length != 0) {
-
             jwt.sign({ rsusuario }, process.env.CLAVESECRETA
                 , { expiresIn: '12h' }//Para personalizar el tiempo para expirar
                 , (err, token) => {

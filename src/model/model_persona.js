@@ -57,11 +57,11 @@ const persona = database.define("persona",{
         allowNull:false
     },
     idciudad:{
-        type:DataTypes.STRING,
+        type:DataTypes.INTEGER,
         allowNull:false
     },
     idgrados_arma:{
-        type:DataTypes.STRING,
+        type:DataTypes.INTEGER,
         allowNull:false
     },
 },
@@ -72,13 +72,16 @@ const persona = database.define("persona",{
 
 persona.hasOne(ciudad,{
     foreignKey:"idciudad",
-    primaryKey:"idciudad"
+    primaryKey:"idciudad",
+    sourceKey:"idciudad",
 });
 
 persona.hasOne(grados_arma,{
     foreignKey:"idgrados_arma",
-    primaryKey:"idgrados_arma"
+    primaryKey:"idgrados_arma",
+    sourceKey:"idgrados_arma",
 });
+
 
 module.exports=persona
 

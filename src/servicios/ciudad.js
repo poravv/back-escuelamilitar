@@ -64,11 +64,12 @@ routes.get('/get/:idciudad', verificaToken, async (req, res) => {
 
 routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
-    
     try {
+        
         const ciudades = await ciudad.create(req.body, {
             transaction: t
         });
+
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
                 res.json({error: "Error ",err});
@@ -79,15 +80,16 @@ routes.post('/post/', verificaToken, async (req, res) => {
                     mensaje: "Registro almacenado",
                     authData: authData,
                     body: ciudades
-                })
+                });
             }
         })
-    } catch (er) {
+    } catch (error) {
         res.json({error: "error catch"});
         console.log('Rollback')
         t.rollback();
     }
 })
+
 
 routes.put('/put/:idciudad', verificaToken, async (req, res) => {
 

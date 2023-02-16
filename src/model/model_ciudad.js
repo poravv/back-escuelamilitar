@@ -1,7 +1,7 @@
 const{DataTypes}=require("sequelize")
 const database=require("../database")
 
-const ciudad = database.define("ciudad",{
+const ciudad = database.define("Ciudad",{
     
     idciudad:{
         type:DataTypes.INTEGER,
@@ -10,14 +10,14 @@ const ciudad = database.define("ciudad",{
     },
     descripcion:{
         type:DataTypes.STRING,
-        allowNull:false
+        //allowNull:false
     },
     estado:{
         type:DataTypes.STRING,
-        allowNull:true
+        //allowNull:true
     }
 },{
-    tableName:"Ciudad",
+    tableName:"ciudad",
     timestamps:false
 })
 

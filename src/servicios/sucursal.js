@@ -2,6 +2,7 @@ const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
 const sucursal = require("../model/model_sucursal")
+const ciudad = require("../model/model_ciudad")
 const database = require('../database')
 const{DataTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
@@ -27,7 +28,8 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 routes.get('/get/', verificaToken, async (req, res) => {
     
-    const sucursales = await sucursal.findAll();
+    
+    const sucursales = await sucursal.findAll({include: ciudad})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
