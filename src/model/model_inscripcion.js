@@ -24,21 +24,26 @@ const inscripcion=database.define("inscripcion",{
     },
     idconvocatoria: {
         type: DataTypes.INTEGER,
-        allowNull:false
+        allowNull:false,
+        primaryKey:true
     }
 },{
     tableName:"Inscripcion",
     timestamps:false
 })
 
-inscripcion.hasOne(convocatoria,{
-    foreignKey:"idconvocatoria",
-    primaryKey:"idconvocatoria"
-})
 
 inscripcion.hasOne(persona,{
     foreignKey:"idpersona",
-    primaryKey:"idpersona"
+    primaryKey:"idpersona",
+    sourceKey:"idpersona"
+})
+
+
+inscripcion.hasOne(convocatoria,{
+    foreignKey:"idconvocatoria",
+    primaryKey:"idconvocatoria",
+    sourceKey:"idconvocatoria",
 })
 
 module.exports=inscripcion

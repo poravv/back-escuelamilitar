@@ -7,7 +7,7 @@ const persona = database.define("persona",{
     idpersona:{
         type:DataTypes.INTEGER,
         primaryKey:true,
-        autoIncrement:true
+        autoIncrement:true,
     },
     nombre:{
         type:DataTypes.STRING,

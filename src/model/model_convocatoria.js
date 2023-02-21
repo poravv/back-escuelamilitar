@@ -2,7 +2,7 @@ const{DataTypes}=require("sequelize")
 const database = require("../database")
 const anho_lectivo=require("./model_anho_lectivo")
 const planificacion=require("./model_planificacion")
-const instructor=require("./model_instructor")
+const turno=require("./model_turno")
 
 const convocatoria=database.define("convocatoria",{
     idconvocatoria:{
@@ -38,32 +38,39 @@ const convocatoria=database.define("convocatoria",{
         type: DataTypes.INTEGER,
         allowNull:false
     },
+    idturno: {
+        type: DataTypes.INTEGER,
+        allowNull:false
+    },
     idplanificacion: {
         type: DataTypes.INTEGER,
         allowNull:false
     },
-    idinstructor: {
-        type: DataTypes.INTEGER,
+    ffin:{
+        type:DataTypes.DATE,
         allowNull:false
-    }
+    },
 },{
-    tableName:"Planificacion",
+    tableName:"Convocatoria",
     timestamps:false
 })
 
 convocatoria.hasOne(anho_lectivo,{
     foreignKey:"idanho_lectivo",
-    primaryKey:"idanho_lectivo"
+    primaryKey:"idanho_lectivo",
+    //sourceKey:"idanho_lectivo"
 })
 
 convocatoria.hasOne(planificacion,{
     foreignKey:"idplanificacion",
-    primaryKey:"idplanificacion"
+    primaryKey:"idplanificacion",
+    sourceKey:"idplanificacion"
 })
 
-convocatoria.hasOne(instructor,{
-    foreignKey:"idinstructor",
-    primaryKey:"idinstructor"
+convocatoria.hasOne(turno,{
+    foreignKey:"idturno",
+    primaryKey:"idturno",
+    sourceKey:"idturno"
 })
 
 module.exports=convocatoria

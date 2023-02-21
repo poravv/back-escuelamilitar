@@ -3,14 +3,14 @@ const routes = express.Router();
 const jwt = require("jsonwebtoken");
 const anho_lectivo = require("../model/model_anho_lectivo")
 const database = require('../database')
-const{DataTypes}=require("sequelize")
+const { QueryTypes } = require('sequelize');
 const verificaToken = require('../middleware/token_extractor')
 require("dotenv").config()
 
 
-routes.get('/getsql/', verificaToken, async (req, res) => {
-    const anho_lectivoes = await database.query('select * from anho_lectivo order by descripcion asc',{type: DataTypes.SELECT})
-
+routes.get('/getunique/', verificaToken, async (req, res) => {
+    const anho_lectivoes = await database.query(`select * from anho_lectivo where estado='AC' order by anho desc LIMIT 1`,{type: QueryTypes.SELECT})
+    //console.log(anho_lectivoes);
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});

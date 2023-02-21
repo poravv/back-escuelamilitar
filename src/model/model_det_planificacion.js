@@ -1,28 +1,42 @@
 const{DataTypes}=require("sequelize")
 const database = require("../database")
 const materia=require("./model_materia")
-const planificacion=require("./model_planificacion")
+const instructor=require("./model_instructor")
 
 const det_planificacion=database.define("det_planificacion",{
-    idplanificacion:{
+    iddet_planificacion:{
         type:DataTypes.INTEGER,
+        autoIncrement:true,
         primaryKey:true
+    },
+    carga_horaria:{
+        type: DataTypes.INTEGER,
+        allowNull:false
+    },
+    descripcion:{
+        type: DataTypes.STRING,
+        allowNull:false
+    },  
+    estado: {
+        type: DataTypes.STRING,
+        allowNull:false,
     },
     idmateria: {
         type: DataTypes.INTEGER,
         allowNull:false,
-        primaryKey:true
+        foreignKey:true
     },
-    idestado: {
+    idplanificacion: {
         type: DataTypes.INTEGER,
         allowNull:false,
-        primaryKey:true
+        foreignKey:true
     },
-    carga_horaria:{
-        type: DataTypes.STRING,
-        allowNull:false
-    },    
-    
+    idinstructor: {
+        type: DataTypes.INTEGER,
+        allowNull:false,
+        foreignKey:true
+    },
+   
 },{
     tableName:"Det_planificacion",
     timestamps:false
@@ -30,15 +44,14 @@ const det_planificacion=database.define("det_planificacion",{
 
 det_planificacion.hasOne(materia,{
     foreignKey:"idmateria",
-    primaryKey:"idmateria"
+    primaryKey:"idmateria",
+    sourceKey:"idmateria"
 })
 
-
-det_planificacion.hasOne(planificacion,{
-    foreignKey:"idplanificacion",
-    primaryKey:"idplanificacion"
+det_planificacion.hasOne(instructor,{
+    foreignKey:"idinstructor",
+    primaryKey:"idinstructor",
+    sourceKey:"idinstructor"
 })
-
-
 
 module.exports=det_planificacion

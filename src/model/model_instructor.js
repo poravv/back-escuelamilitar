@@ -35,6 +35,4 @@ instructor.hasOne(persona,{
     //as:"idpersona",
 }) 
 
-//Model.belongsTo(models.ModelName, { foreignKey: 'your_key', as:'your_identifier' });
-
 module.exports=instructor

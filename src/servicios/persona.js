@@ -3,14 +3,15 @@ const routes = express.Router();
 const jwt = require("jsonwebtoken");
 const persona = require("../model/model_persona")
 const grados_arma = require("../model/model_grados_arma")
+const ciudad = require("../model/model_ciudad")
 const database = require('../database')
-const{DataTypes}=require("sequelize")
+const{ QueryTypes }=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
 require("dotenv").config()
 
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const personaes = await database.query('select * from persona order by descripcion asc',{type: DataTypes.SELECT})
+    const personaes = await database.query('select * from persona order by descripcion asc',{type: QueryTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -28,7 +29,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 routes.get('/get/', verificaToken, async (req, res) => {
     
-    const personaes = await persona.findAll({include: [{ model: grados_arma }]});
+    const personaes = await persona.findAll({include: [{ model: grados_arma },{ model: ciudad }]});
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});;
@@ -93,7 +94,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
 routes.put('/put/:idpersona', verificaToken, async (req, res) => {
 
     //console.log(req.params.idpersona)
-    //console.log(req.body)
+    console.log(req.body)
     const t = await database.transaction();
     try {
         const personaes = await persona.update(req.body, { where: { idpersona: req.params.idpersona } }, {

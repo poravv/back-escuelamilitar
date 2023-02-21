@@ -37,7 +37,7 @@ app.use(express.json())
 app.use(configrutas)
 
 //Rutas --------------------------------
-app.get('/',(req,res)=>{
+app.get('/empy',(req,res)=>{
     res.send('Bienvenido a mi APP Node Js')
 })
 

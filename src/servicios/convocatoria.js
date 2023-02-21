@@ -2,6 +2,9 @@ const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
 const convocatoria = require("../model/model_convocatoria")
+const planificacion = require("../model/model_planificacion")
+const curso = require("../model/model_curso")
+const turno = require("../model/model_turno")
 const database = require('../database')
 const{DataTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
@@ -27,7 +30,11 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 routes.get('/get/', verificaToken, async (req, res) => {
     
-    const convocatoriaes = await convocatoria.findAll();
+    const convocatoriaes = await convocatoria.findAll({include: [
+        { model: planificacion,include: [
+            { model: curso },
+        ] }
+        ,{ model: turno },]});
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -45,7 +52,11 @@ routes.get('/get/', verificaToken, async (req, res) => {
 })
 
 routes.get('/get/:idconvocatoria', verificaToken, async (req, res) => {
-    const convocatoriaes = await convocatoria.findByPk(req.params.idconvocatoria)
+    const convocatoriaes = await convocatoria.findByPk(req.params.idconvocatoria,{include: [
+        { model: planificacion,include: [
+            { model: curso },
+        ] }
+        ,{ model: turno },]})
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});;
@@ -64,7 +75,7 @@ routes.get('/get/:idconvocatoria', verificaToken, async (req, res) => {
 
 routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
-    
+    console.log(req.body)
     try {
         const convocatoriaes = await convocatoria.create(req.body, {
             transaction: t
