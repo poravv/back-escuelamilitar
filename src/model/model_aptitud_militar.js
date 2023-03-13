@@ -1,27 +1,24 @@
 const{DataTypes}=require("sequelize")
 const database=require("../database")
 
-const ciudad = database.define("grados_arma",{
-    idgrados_arma:{
+const aptitud_militar = database.define("Aptitud_militar",{
+    
+    idaptitud_militar:{
         type:DataTypes.INTEGER,
         autoIncrement:true,
         primaryKey:true,
     },
-    grado:{
+    descripcion:{
         type:DataTypes.STRING,
-        allowNull:false
-    },
-    armas:{
-        type:DataTypes.STRING,
-        allowNull:false
+        //allowNull:false
     },
     estado:{
         type:DataTypes.STRING,
-        allowNull:true
+        //allowNull:true
     }
 },{
-    tableName:"Grados_arma",
+    tableName:"aptitud_militar",
     timestamps:false
 })
 
-module.exports=ciudad
+module.exports=aptitud_militar

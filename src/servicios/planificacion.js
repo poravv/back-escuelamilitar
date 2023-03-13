@@ -29,6 +29,21 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
     })
 })
 
+routes.get('/getplaninst/:idpersona', verificaToken, async (req, res) => {
+    const planificaciones = await database.query(`select * from vw_curso_instructor where idpersona = ${req.params.idpersona}`, { type: QueryTypes.SELECT });
+    jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+        if (err) {
+            res.json({ error: "Error ", err });
+        } else {
+            res.json({
+                mensaje: "successfully",
+                authData: authData,
+                body: planificaciones
+            })
+        }
+    })
+})
+
 
 routes.get('/get/', verificaToken, async (req, res) => {
     const planificaciones = await planificacion.findAll({

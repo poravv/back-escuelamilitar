@@ -104,15 +104,17 @@ routes.post('/post/', verificaToken, async (req, res) => {
             } else {
                 t.commit();
                 //console.log('Commitea')
-                
                 res.json({
                     mensaje: "Registro almacenado",
                     authData: authData,
                     body: inscripciones 
-                })
+                });
             }
+            
         })
+        await database.query(`update convocatoria set cupo=(cupo-1) where idconvocatoria = ${req.body.idconvocatoria}`);
         await database.query(`CALL p_carga_cuotas(${inscripciones.idinscripcion},${req.body.idpersona},${req.body.idconvocatoria},@a)`);
+
     } catch (er) {
         res.json({error: "error catch"});
         console.log('Rollback')

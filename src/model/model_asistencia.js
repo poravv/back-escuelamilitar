@@ -1,5 +1,6 @@
 const{DataTypes}=require("sequelize")
 const database=require("../database")
+const det_asistencia= require('./model_det_asistencia')
 
 const asistencia = database.define("asistencia",{
     
@@ -15,10 +16,21 @@ const asistencia = database.define("asistencia",{
     estado:{
         type:DataTypes.STRING,
         allowNull:true
-    }
+    },
+    iddet_planificacion:{
+        type:DataTypes.INTEGER,
+        allowNull:true
+    },
 },{
     tableName:"Asistencia",
     timestamps:false
 })
 
-module.exports=asistencia
+
+asistencia.hasMany(det_asistencia,{
+    foreignKey:"idasistencia",
+    primaryKey:"idasistencia",
+    sourceKey:"idasistencia"
+})
+
+module.exports=asistencia;

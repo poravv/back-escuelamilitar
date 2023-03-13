@@ -3,13 +3,13 @@ const routes = express.Router();
 const jwt = require("jsonwebtoken");
 const asistencia = require("../model/model_asistencia")
 const database = require('../database')
-const{DataTypes}=require("sequelize")
+const{ QueryTypes }=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
 require("dotenv").config()
 
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const asistenciaes = await database.query('select * from asistencia order by descripcion asc',{type: DataTypes.SELECT})
+    const asistenciaes = await database.query('select * from asistencia order by descripcion asc',{type: QueryTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -26,14 +26,11 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 
 routes.get('/get/', verificaToken, async (req, res) => {
-    
     const asistenciaes = await asistencia.findAll();
-
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});;
         } else {
-            
             res.json({
                 mensaje: "successfully",
                 authData: authData,
@@ -43,6 +40,23 @@ routes.get('/get/', verificaToken, async (req, res) => {
 
     })
 })
+
+routes.get('/getasistenciacab/:iddet_planificacion', verificaToken, async (req, res) => {
+    const asistenciaes = await database.query(`select * from vw_asistencia_cab where iddet_planificacion=${req.params.iddet_planificacion}`,{type: QueryTypes.SELECT})
+    jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+        if (err) {
+            res.json({error: "Error ",err});
+        } else {
+            res.json({
+                mensaje: "successfully",
+                authData: authData,
+                body: asistenciaes
+            })
+        }
+    })
+})
+
+
 
 routes.get('/get/:idasistencia', verificaToken, async (req, res) => {
     const asistenciaes = await asistencia.findByPk(req.params.idasistencia)

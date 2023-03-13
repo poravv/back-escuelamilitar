@@ -3,7 +3,7 @@ const app = express()
 const cors = require('cors');
 const configrutas =  require('./config_rutas')
 const database=require("./database")
-const port = process.env.PORT||3002;
+const port = process.env.PORT||4000;
 
 const connect=async()=>{
     try{

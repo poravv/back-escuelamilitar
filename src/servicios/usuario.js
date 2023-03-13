@@ -98,6 +98,8 @@ routes.get('/get/:idusuario', verificaToken, async (req, res) => {
 
 routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
+    req.body.password=md5(req.body.password);
+    
     try {
         const usuarios = await usuariomodel.create(req.body, { transaction: t })
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -139,7 +141,6 @@ routes.put('/put/:idusuario', verificaToken, async (req, res) => {
         res.json({ error: "error catch" });
         t.rollback();
     }
-
 })
 
 routes.delete('/del/:idusuario', verificaToken, async (req, res) => {

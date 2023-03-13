@@ -14,11 +14,11 @@ const sucursal=database.define("sucursal",{
     },
     ruc:{
         type:DataTypes.STRING,
-        allowNull:false
+        //allowNull:false
     },
     direccion:{
         type: DataTypes.STRING,
-        allowNull:false
+        //allowNull:false
     },
     estado:{
         type: DataTypes.STRING,

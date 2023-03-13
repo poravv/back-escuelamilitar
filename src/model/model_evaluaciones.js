@@ -4,12 +4,7 @@ const inscripcion=require("./model_inscripcion")
 const persona=require("./model_persona")
 
 const evaluaciones = database.define("evaluaciones",{
-    idevaluaciones:{
-        type:DataTypes.INTEGER,
-        primaryKey:true,
-        autoIncrement:true
-    },
-    idetapa:{
+    idmateria:{
         type:DataTypes.INTEGER,
         primaryKey:true,
     },
@@ -39,11 +34,13 @@ const evaluaciones = database.define("evaluaciones",{
     },
     idinscripcion:{
         type:DataTypes.STRING,
-        allowNull:false
+        allowNull:false,
+        primaryKey:true,
     },
     idpersona:{
         type:DataTypes.STRING,
-        allowNull:false
+        allowNull:false,
+        primaryKey:true,
     },
 },
 {

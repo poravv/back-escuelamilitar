@@ -68,10 +68,9 @@ routes.get('/get/:idconvocatoria', verificaToken, async (req, res) => {
                 body: convocatoriaes
             });
         }
-
-
     })
 })
+
 
 routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();

@@ -1,7 +1,6 @@
 const{DataTypes}=require("sequelize")
 const database = require("../database")
 const persona=require("./model_persona")
-const asistencia=require("./model_asistencia")
 const inscripcion=require("./model_inscripcion")
 
 const det_asistencia=database.define("det_asistencia",{
@@ -32,11 +31,6 @@ const det_asistencia=database.define("det_asistencia",{
 },{
     tableName:"Det_asistencia",
     timestamps:false
-})
-
-det_asistencia.hasOne(asistencia,{
-    foreignKey:"idasistencia",
-    primaryKey:"idasistencia"
 })
 
 det_asistencia.hasOne(persona,{
