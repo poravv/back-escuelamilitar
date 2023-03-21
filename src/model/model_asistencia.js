@@ -17,6 +17,10 @@ const asistencia = database.define("asistencia",{
         type:DataTypes.STRING,
         allowNull:true
     },
+    idturno:{
+        type:DataTypes.INTEGER,
+        //allowNull:true
+    },
     iddet_planificacion:{
         type:DataTypes.INTEGER,
         allowNull:true

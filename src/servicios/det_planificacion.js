@@ -3,13 +3,13 @@ const routes = express.Router();
 const jwt = require("jsonwebtoken");
 const det_planificacion = require("../model/model_det_planificacion")
 const database = require('../database')
-const{DataTypes}=require("sequelize")
+const{QueryTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
 require("dotenv").config()
 
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const det_planificaciones = await database.query('select * from det_planificacion order by descripcion asc',{type: DataTypes.SELECT})
+    const det_planificaciones = await database.query('select * from det_planificacion order by descripcion asc',{type: QueryTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {

@@ -7,13 +7,13 @@ const convocatoria = require("../model/model_convocatoria")
 const planificacion = require("../model/model_planificacion")
 const curso = require("../model/model_curso")
 const database = require('../database')
-const{DataTypes}=require("sequelize")
+const{QueryTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
 require("dotenv").config()
 
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const inscripciones = await database.query('select * from inscripcion',{type: DataTypes.SELECT})
+    const inscripciones = await database.query('select * from inscripcion',{type: QueryTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {

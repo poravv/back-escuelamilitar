@@ -37,12 +37,12 @@ routes.get('/get/', verificaToken, async (req, res) => {
                 body: asistenciaes
             })
         }
-
     })
 })
 
-routes.get('/getasistenciacab/:iddet_planificacion', verificaToken, async (req, res) => {
-    const asistenciaes = await database.query(`select * from vw_asistencia_cab where iddet_planificacion=${req.params.iddet_planificacion}`,{type: QueryTypes.SELECT})
+routes.get('/getasistenciacab/:iddet_planificacion/:idturno', verificaToken, async (req, res) => {
+    try {
+        const asistenciaes = await database.query(`select * from vw_asistencia_cab where iddet_planificacion=${req.params.iddet_planificacion} and idturno = ${req.params.idturno} and estado='AC' order by fecha desc`,{type: QueryTypes.SELECT})
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});
@@ -54,6 +54,9 @@ routes.get('/getasistenciacab/:iddet_planificacion', verificaToken, async (req, 
             })
         }
     })
+    } catch (error) {
+        res.json({error: "error catch"});
+    }
 })
 
 

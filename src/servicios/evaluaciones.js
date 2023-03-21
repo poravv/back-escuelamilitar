@@ -26,7 +26,8 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 
 routes.get('/getproceso/:idconvocatoria/:idmateria', verificaToken, async (req, res) => {
-    await database.query(`CALL p_genera_proceso(${req.params.idconvocatoria},@a);`);
+    try {
+        await database.query(`CALL p_genera_proceso(${req.params.idconvocatoria},@a);`);
     const evaluacioneses = await database.query(`select * from vw_proceso where idconvocatoria= ${req.params.idconvocatoria} and idmateria=${req.params.idmateria}`,{type: QueryTypes.SELECT});
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -39,6 +40,9 @@ routes.get('/getproceso/:idconvocatoria/:idmateria', verificaToken, async (req, 
             })
         }
     })
+    } catch (error) {
+        res.json({error: "error catch"});
+    }
 })
 
 

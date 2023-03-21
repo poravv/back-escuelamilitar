@@ -26,9 +26,7 @@ routes.get('/getunique/', verificaToken, async (req, res) => {
 
 
 routes.get('/get/', verificaToken, async (req, res) => {
-    
     const anho_lectivoes = await anho_lectivo.findAll();
-
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});;

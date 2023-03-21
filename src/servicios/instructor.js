@@ -5,13 +5,13 @@ const instructor = require("../model/model_instructor")
 const persona = require("../model/model_persona")
 const grados_arma = require("../model/model_grados_arma")
 const database = require('../database')
-const{DataTypes}=require("sequelize")
+const{QueryTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
 require("dotenv").config()
 
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const instructores = await database.query('select * from instructor order by descripcion asc',{type: DataTypes.SELECT})
+    const instructores = await database.query('select * from instructor order by descripcion asc',{type: QueryTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {

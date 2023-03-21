@@ -2,6 +2,7 @@ const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
 const planificacion = require("../model/model_planificacion")
+const vw_planificacion = require("../model/model_vwplanificacion")
 const curso = require("../model/model_curso")
 const materia = require("../model/model_materia")
 const instructor = require("../model/model_instructor")
@@ -30,22 +31,57 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 })
 
 routes.get('/getplaninst/:idpersona', verificaToken, async (req, res) => {
-    const planificaciones = await database.query(`select * from vw_curso_instructor where idpersona = ${req.params.idpersona}`, { type: QueryTypes.SELECT });
-    jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
-        if (err) {
-            res.json({ error: "Error ", err });
-        } else {
-            res.json({
-                mensaje: "successfully",
-                authData: authData,
-                body: planificaciones
-            })
-        }
-    })
+    try {
+        const planificaciones = await database.query(`select * from vw_curso_instructor where idpersona = ${req.params.idpersona}`, { type: QueryTypes.SELECT });
+        jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+            if (err) {
+                res.json({ error: "Error ", err });
+            } else {
+                res.json({
+                    mensaje: "successfully",
+                    authData: authData,
+                    body: planificaciones
+                })
+            }
+        })
+    } catch (error) {
+        res.json({ error: "Error ", error });
+    }
 })
 
-
 routes.get('/get/', verificaToken, async (req, res) => {
+    try {
+        const planificaciones = await vw_planificacion.findAll({
+            include: [
+                { model: curso },
+                {
+                    model: det_planificacion,
+                    include: [
+                        { model: materia, },
+                        { model: instructor, include: [{ model: persona, include: [{ model: grados_arma }] }] }
+                    ]
+                }
+            ]
+        });
+
+        jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+            if (err) {
+                res.json({ error: "Error ", err });;
+            } else {
+                res.json({
+                    mensaje: "successfully",
+                    authData: authData,
+                    body: planificaciones
+                })
+            }
+
+        })
+    } catch (error) {
+        res.json({ error: "Error" });
+    }
+})
+
+routes.get('/get1/', verificaToken, async (req, res) => {
     const planificaciones = await planificacion.findAll({
         include: [
             { model: curso },
@@ -53,11 +89,13 @@ routes.get('/get/', verificaToken, async (req, res) => {
                 model: det_planificacion,
                 include: [
                     { model: materia, },
-                    { model: instructor,include: [{ model: persona,include : [{ model: grados_arma }]}] }
+                    { model: instructor, include: [{ model: persona, include: [{ model: grados_arma }] }] }
                 ]
             }
         ]
     });
+
+
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
