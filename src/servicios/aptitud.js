@@ -1,8 +1,7 @@
 const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
-const materia = require("../model/model_materia")
-const vw_mat_cnv = require("../model/model_vw_mat_cnv")
+const aptitud_militar = require("../model/model_aptitud_militar")
 const database = require('../database')
 const{QueryTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
@@ -10,7 +9,7 @@ require("dotenv").config()
 
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const materiaes = await database.query('select * from materia order by descripcion asc',{type: QueryTypes.SELECT})
+    const aptitud_militares = await database.query('select * from aptitud_militar order by descripcion asc',{type: QueryTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -19,7 +18,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: materiaes
+                body: aptitud_militares
             })
         }
     })
@@ -28,7 +27,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 routes.get('/get/', verificaToken, async (req, res) => {
     
-    const materiaes = await materia.findAll();
+    const aptitud_militares = await aptitud_militar.findAll();
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -38,14 +37,15 @@ routes.get('/get/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: materiaes
+                body: aptitud_militares
             })
         }
+
     })
 })
 
-routes.get('/get/:idmateria', verificaToken, async (req, res) => {
-    const materiaes = await materia.findByPk(req.params.idmateria)
+routes.get('/get/:idaptitud_militar', verificaToken, async (req, res) => {
+    const aptitud_militares = await aptitud_militar.findByPk(req.params.idaptitud_militar)
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});;
@@ -54,7 +54,7 @@ routes.get('/get/:idmateria', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: materiaes
+                body: aptitud_militares
             });
         }
 
@@ -62,29 +62,14 @@ routes.get('/get/:idmateria', verificaToken, async (req, res) => {
     })
 })
 
-
-routes.get('/getmatcnv/:idconvocatoria', verificaToken, async (req, res) => {
-    const materiaes = await vw_mat_cnv.findAll({where: { idconvocatoria:req.params.idconvocatoria }});
-    jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
-        if (err) {
-            res.json({error: "Error ",err});;
-        } else {
-            res.json({
-                mensaje: "successfully",
-                authData: authData,
-                body: materiaes
-            })
-        }
-    })
-})
-
 routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
-    
     try {
-        const materiaes = await materia.create(req.body, {
+        
+        const aptitud_militares = await aptitud_militar.create(req.body, {
             transaction: t
         });
+
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
                 res.json({error: "Error ",err});
@@ -94,22 +79,23 @@ routes.post('/post/', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro almacenado",
                     authData: authData,
-                    body: materiaes
-                })
+                    body: aptitud_militares
+                });
             }
         })
-    } catch (er) {
+    } catch (error) {
         res.json({error: "error catch"});
         console.log('Rollback')
         t.rollback();
     }
 })
 
-routes.put('/put/:idmateria', verificaToken, async (req, res) => {
+
+routes.put('/put/:idaptitud_militar', verificaToken, async (req, res) => {
 
     const t = await database.transaction();
     try {
-        const materiaes = await materia.update(req.body, { where: { idmateria: req.params.idmateria } }, {
+        const aptitud_militares = await aptitud_militar.update(req.body, { where: { idaptitud_militar: req.params.idaptitud_militar } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -120,7 +106,7 @@ routes.put('/put/:idmateria', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro actualizado",
                     authData: authData,
-                    body: materiaes
+                    body: aptitud_militares
                 })
             }
         })
@@ -131,12 +117,12 @@ routes.put('/put/:idmateria', verificaToken, async (req, res) => {
     }
 })
 
-routes.delete('/del/:idmateria', verificaToken, async (req, res) => {
+routes.delete('/del/:idaptitud_militar', verificaToken, async (req, res) => {
 
     const t = await  database.transaction();
     
     try {
-        const materiaes = await materia.destroy({ where: { idmateria: req.params.idmateria } }, {
+        const aptitud_militares = await aptitud_militar.destroy({ where: { idaptitud_militar: req.params.idaptitud_militar } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -147,7 +133,7 @@ routes.delete('/del/:idmateria', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro eliminado",
                     authData: authData,
-                    body: materiaes
+                    body: aptitud_militares
                 })
             }
         })

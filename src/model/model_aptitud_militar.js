@@ -12,6 +12,10 @@ const aptitud_militar = database.define("Aptitud_militar",{
         type:DataTypes.STRING,
         //allowNull:false
     },
+    punto:{
+        type:DataTypes.DECIMAL,
+        //allowNull:false
+    },
     estado:{
         type:DataTypes.STRING,
         //allowNull:true

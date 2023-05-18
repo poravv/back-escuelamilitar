@@ -29,9 +29,7 @@ routes.get('/getdetalle/:idasistencia/:idturno', verificaToken, async (req, res)
 
     try {
         await database.query(`CALL p_genera_asistencia(${req.params.idasistencia},@a);`);
-
         const det_asistencias = await database.query(`select * from vw_asisdet where idasistencia = ${req.params.idasistencia} and idturno= ${req.params.idturno}`, { type: QueryTypes.SELECT })
-
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
                 res.json({ error: "Error ", err });

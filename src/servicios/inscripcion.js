@@ -31,7 +31,17 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 routes.get('/get/', verificaToken, async (req, res) => {
     
-    const inscripciones = await inscripcion.findAll();
+    const inscripciones = await inscripcion.findAll({include: [
+        { model: persona},
+        { model: convocatoria,include: [
+            { model: planificacion,include: [
+                { model: curso },
+            ] },
+        ]  },],
+        order:[
+            //['numero','DESC']
+            ['numero','ASC']
+        ]});
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -58,7 +68,11 @@ routes.get('/getconv/:idconvocatoria', verificaToken, async (req, res) => {
                 { model: planificacion,include: [
                     { model: curso },
                 ] },
-            ]  },]});
+            ]  },],
+            order:[
+                //['numero','DESC']
+                ['numero','ASC']
+            ]});
     
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {

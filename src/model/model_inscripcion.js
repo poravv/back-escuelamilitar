@@ -9,6 +9,11 @@ const inscripcion=database.define("inscripcion",{
         autoIncrement:true,
         primaryKey:true
     },
+    numero:{
+        type:DataTypes.INTEGER,
+        //autoIncrement:true,
+        //primaryKey:true
+    },
     idpersona:{
         type:DataTypes.INTEGER,
         //autoIncrement:true,

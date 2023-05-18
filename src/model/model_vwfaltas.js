@@ -3,7 +3,7 @@ const database = require("../database")
 const persona=require("./model_persona")
 const aptitud_militar=require("./model_aptitud_militar")
 
-const faltas=database.define("faltas",{
+const faltas=database.define("vw_faltas",{
     idfaltas:{
         type:DataTypes.INTEGER,
         autoIncrement:true,
@@ -29,12 +29,49 @@ const faltas=database.define("faltas",{
         type: DataTypes.INTEGER,
         allowNull:false
     },
+    nombre:{
+        type: DataTypes.STRING,
+        allowNull:false
+    },
+    apellido:{
+        type: DataTypes.STRING,
+        allowNull:false
+    },
+    documento:{
+        type: DataTypes.STRING,
+        allowNull:false
+    },
+    descripcion:{
+        type: DataTypes.STRING,
+        allowNull:false
+    },
+    punto:{
+        type: DataTypes.INTEGER,
+        allowNull:false
+    },
+    /*
+    idinstructor:{
+        type: DataTypes.INTEGER,
+        allowNull:false
+    },
+    idusuario:{
+        type: DataTypes.INTEGER,
+        allowNull:false
+    },*/
+    curso:{
+        type: DataTypes.STRING,
+        allowNull:false
+    },
+    turno:{
+        type: DataTypes.STRING,
+        allowNull:false
+    },
     estado:{
         type: DataTypes.STRING,
         allowNull:false
     },
 },{
-    tableName:"Faltas",
+    tableName:"vw_faltas",
     timestamps:false
 })
 

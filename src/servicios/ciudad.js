@@ -7,7 +7,6 @@ const{QueryTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
 require("dotenv").config()
 
-
 routes.get('/getsql/', verificaToken, async (req, res) => {
     const ciudades = await database.query('select * from ciudad order by descripcion asc',{type: QueryTypes.SELECT})
 

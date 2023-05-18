@@ -9,7 +9,7 @@ require("dotenv").config()
 
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const evaluacioneses = await database.query('select * from evaluaciones order by descripcion asc',{type: QueryTypes.SELECT})
+    const rs_evaluaciones = await database.query('select * from evaluaciones order by descripcion asc',{type: QueryTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -18,17 +18,18 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: evaluacioneses
+                body: rs_evaluaciones
             })
         }
     })
 })
 
 
-routes.get('/getproceso/:idconvocatoria/:idmateria', verificaToken, async (req, res) => {
+
+routes.get('/getevaluaciones/:idconvocatoria/:idinscripcion', verificaToken, async (req, res) => {
     try {
         await database.query(`CALL p_genera_proceso(${req.params.idconvocatoria},@a);`);
-    const evaluacioneses = await database.query(`select * from vw_proceso where idconvocatoria= ${req.params.idconvocatoria} and idmateria=${req.params.idmateria}`,{type: QueryTypes.SELECT});
+    const rs_evaluaciones = await database.query(`select mv.* from (select @cnv_evaluacion:=${req.params.idconvocatoria}) cnv, (select @idinsc_evaluacion:=${req.params.idinscripcion}) ins, vw_det_evaluaciones mv`,{type: QueryTypes.SELECT});
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});
@@ -36,7 +37,28 @@ routes.get('/getproceso/:idconvocatoria/:idmateria', verificaToken, async (req, 
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: evaluacioneses
+                body: rs_evaluaciones
+            })
+        }
+    })
+    } catch (error) {
+        res.json({error: "error catch"});
+    }
+})
+
+
+routes.get('/getproceso/:idconvocatoria/:idmateria', verificaToken, async (req, res) => {
+    try {
+        await database.query(`CALL p_genera_proceso(${req.params.idconvocatoria},@a);`);
+    const rs_evaluaciones = await database.query(`select * from vw_proceso where idconvocatoria= ${req.params.idconvocatoria} and idmateria=${req.params.idmateria}`,{type: QueryTypes.SELECT});
+    jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+        if (err) {
+            res.json({error: "Error ",err});
+        } else {
+            res.json({
+                mensaje: "successfully",
+                authData: authData,
+                body: rs_evaluaciones
             })
         }
     })
@@ -48,7 +70,7 @@ routes.get('/getproceso/:idconvocatoria/:idmateria', verificaToken, async (req, 
 
 routes.get('/get/', verificaToken, async (req, res) => {
     
-    const evaluacioneses = await evaluaciones.findAll();
+    const rs_evaluaciones = await evaluaciones.findAll();
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -58,7 +80,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: evaluacioneses
+                body: rs_evaluaciones
             })
         }
 
@@ -66,7 +88,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
 })
 
 routes.get('/get/:idevaluaciones', verificaToken, async (req, res) => {
-    const evaluacioneses = await evaluaciones.findByPk(req.params.idevaluaciones)
+    const rs_evaluaciones = await evaluaciones.findByPk(req.params.idevaluaciones)
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});;
@@ -75,7 +97,7 @@ routes.get('/get/:idevaluaciones', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: evaluacioneses
+                body: rs_evaluaciones
             });
         }
 
@@ -87,7 +109,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
     
     try {
-        const evaluacioneses = await evaluaciones.create(req.body, {
+        const rs_evaluaciones = await evaluaciones.create(req.body, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -99,7 +121,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro almacenado",
                     authData: authData,
-                    body: evaluacioneses
+                    body: rs_evaluaciones
                 })
             }
         })
@@ -113,7 +135,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
 routes.put('/put/:idinscripcion/:idmateria', verificaToken, async (req, res) => {
     const t = await database.transaction();
     try {
-        const evaluacioneses = await evaluaciones.update(req.body, 
+        const rs_evaluaciones = await evaluaciones.update(req.body, 
             { where: { idmateria: req.params.idmateria,idinscripcion: req.params.idinscripcion } }, 
             {transaction: t
             });
@@ -125,7 +147,7 @@ routes.put('/put/:idinscripcion/:idmateria', verificaToken, async (req, res) => 
                 res.json({
                     mensaje: "Registro actualizado",
                     authData: authData,
-                    body: evaluacioneses
+                    body: rs_evaluaciones
                 })
             }
         })
@@ -141,7 +163,7 @@ routes.delete('/del/:idevaluaciones', verificaToken, async (req, res) => {
     const t = await  database.transaction();
     
     try {
-        const evaluacioneses = await evaluaciones.destroy({ where: { idevaluaciones: req.params.idevaluaciones } }, {
+        const rs_evaluaciones = await evaluaciones.destroy({ where: { idevaluaciones: req.params.idevaluaciones } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -152,7 +174,7 @@ routes.delete('/del/:idevaluaciones', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro eliminado",
                     authData: authData,
-                    body: evaluacioneses
+                    body: rs_evaluaciones
                 })
             }
         })

@@ -8,30 +8,6 @@ const evaluaciones = database.define("evaluaciones",{
         type:DataTypes.INTEGER,
         primaryKey:true,
     },
-    tpi1:{
-        type:DataTypes.INTEGER,
-        
-    },
-    tpi2:{
-        type:DataTypes.INTEGER,
-    },
-    exp1:{
-        type:DataTypes.INTEGER,
-    },
-    tpg1:{
-        type:DataTypes.INTEGER,
-    },
-    tpg2:{
-        type:DataTypes.INTEGER,
-    },
-    tpg3:{
-        type:DataTypes.INTEGER,
-        allowNull:false
-    },
-    exf:{
-        type:DataTypes.INTEGER,
-        allowNull:false
-    },
     idinscripcion:{
         type:DataTypes.STRING,
         allowNull:false,
@@ -42,6 +18,26 @@ const evaluaciones = database.define("evaluaciones",{
         allowNull:false,
         primaryKey:true,
     },
+    cpp:{
+        type:DataTypes.DECIMAL,
+        
+    },
+    tp:{
+        type:DataTypes.DECIMAL,
+    },
+    exp:{
+        type:DataTypes.DECIMAL,
+    },
+    exf:{
+        type:DataTypes.DECIMAL,
+    },
+    comp:{
+        type:DataTypes.DECIMAL,
+    },
+    extr:{
+        type:DataTypes.INTEGER,
+        allowNull:false
+    }
 },
 {
     tableName:"Evaluaciones",

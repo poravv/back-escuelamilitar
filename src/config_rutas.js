@@ -22,9 +22,12 @@ const planificacion = require('./servicios/planificacion')
 const sucursal = require('./servicios/sucursal')
 const turno = require('./servicios/turno')
 const usuario = require('./servicios/usuario')
+const aptitud = require('./servicios/aptitud')
+const reportes = require('./servicios/reportes')
 
 
-rutas.use('/empy/api/ciudad',ciudad);
+rutas.use('/empy/api/ciudad',ciudad);   
+rutas.use('/empy/api/aptitud',aptitud);
 rutas.use('/empy/api/anho_lectivo',anho_lectivo);
 rutas.use('/empy/api/asistencia',asistencia);
 rutas.use('/empy/api/convocatoria',convocatoria);
@@ -45,5 +48,6 @@ rutas.use('/empy/api/planificacion',planificacion);
 rutas.use('/empy/api/sucursal',sucursal);
 rutas.use('/empy/api/turno',turno);
 rutas.use('/empy/api/usuario',usuario);
+rutas.use('/empy/api/reportes',reportes);
 
 module.exports = rutas;
