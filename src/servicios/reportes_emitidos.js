@@ -1,15 +1,14 @@
 const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
-const aptitud_militar = require("../model/model_aptitud_militar")
+const reportes_emitidos = require("../model/model_reportes_emitidos")
 const database = require('../database')
 const{QueryTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
 require("dotenv").config()
 
-
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const aptitud_militares = await database.query('select * from aptitud_militar order by descripcion asc',{type: QueryTypes.SELECT})
+    const reportes_emitidoses = await database.query('select * from reportes_emitidos order by descripcion asc',{type: QueryTypes.SELECT})
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -18,7 +17,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: aptitud_militares
+                body: reportes_emitidoses
             })
         }
     })
@@ -27,7 +26,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 routes.get('/get/', verificaToken, async (req, res) => {
     
-    const aptitud_militares = await aptitud_militar.findAll();
+    const reportes_emitidoses = await reportes_emitidos.findAll();
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
@@ -37,15 +36,15 @@ routes.get('/get/', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: aptitud_militares
+                body: reportes_emitidoses
             })
         }
 
     })
 })
 
-routes.get('/get/:idaptitud_militar', verificaToken, async (req, res) => {
-    const aptitud_militares = await aptitud_militar.findByPk(req.params.idaptitud_militar)
+routes.get('/get/:idreportes_emitidos', verificaToken, async (req, res) => {
+    const reportes_emitidoses = await reportes_emitidos.findByPk(req.params.idreportes_emitidos)
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});;
@@ -54,7 +53,7 @@ routes.get('/get/:idaptitud_militar', verificaToken, async (req, res) => {
             res.json({
                 mensaje: "successfully",
                 authData: authData,
-                body: aptitud_militares
+                body: reportes_emitidoses
             });
         }
 
@@ -66,7 +65,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
     try {
         
-        const aptitud_militares = await aptitud_militar.create(req.body, {
+        const reportes_emitidoses = await reportes_emitidos.create(req.body, {
             transaction: t
         });
 
@@ -79,7 +78,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro almacenado",
                     authData: authData,
-                    body: aptitud_militares
+                    body: reportes_emitidoses
                 });
             }
         })
@@ -91,11 +90,11 @@ routes.post('/post/', verificaToken, async (req, res) => {
 })
 
 
-routes.put('/put/:idaptitud_militar', verificaToken, async (req, res) => {
+routes.put('/put/:idreportes_emitidos', verificaToken, async (req, res) => {
 
     const t = await database.transaction();
     try {
-        const aptitud_militares = await aptitud_militar.update(req.body, { where: { idaptitud_militar: req.params.idaptitud_militar } }, {
+        const reportes_emitidoses = await reportes_emitidos.update(req.body, { where: { idreportes_emitidos: req.params.idreportes_emitidos } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -106,7 +105,7 @@ routes.put('/put/:idaptitud_militar', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro actualizado",
                     authData: authData,
-                    body: aptitud_militares
+                    body: reportes_emitidoses
                 })
             }
         })
@@ -117,12 +116,12 @@ routes.put('/put/:idaptitud_militar', verificaToken, async (req, res) => {
     }
 })
 
-routes.delete('/del/:idaptitud_militar', verificaToken, async (req, res) => {
+routes.delete('/del/:idreportes_emitidos', verificaToken, async (req, res) => {
 
     const t = await  database.transaction();
     
     try {
-        const aptitud_militares = await aptitud_militar.destroy({ where: { idaptitud_militar: req.params.idaptitud_militar } }, {
+        const reportes_emitidoses = await reportes_emitidos.destroy({ where: { idreportes_emitidos: req.params.idreportes_emitidos } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -133,7 +132,7 @@ routes.delete('/del/:idaptitud_militar', verificaToken, async (req, res) => {
                 res.json({
                     mensaje: "Registro eliminado",
                     authData: authData,
-                    body: aptitud_militares
+                    body: reportes_emitidoses
                 })
             }
         })

@@ -55,7 +55,7 @@ routes.get('/getasistenciacab/:iddet_planificacion/:idturno', verificaToken, asy
         }
     })
     } catch (error) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
     }
 })
 
@@ -100,7 +100,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         console.log('Rollback')
         t.rollback();
     }
@@ -126,7 +126,7 @@ routes.put('/put/:idasistencia', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         console.log('Rollback update')
         t.rollback();
     }
@@ -153,7 +153,7 @@ routes.delete('/del/:idasistencia', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         t.rollback();
     }
 })

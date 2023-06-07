@@ -37,6 +37,10 @@ const evaluaciones = database.define("evaluaciones",{
     extr:{
         type:DataTypes.INTEGER,
         allowNull:false
+    },
+    idconvocatoria:{
+        type:DataTypes.INTEGER,
+        allowNull:false
     }
 },
 {

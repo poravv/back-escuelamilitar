@@ -14,7 +14,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
         const rsfaltas = await database.query('select * from faltas order by descripcion asc', { type: QueryTypes.SELECT })
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 res.json({
                     mensaje: "successfully",
@@ -24,7 +24,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
             }
         })
     } catch (error) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
     }
 })
 
@@ -36,7 +36,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
 
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });;
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
             } else {
                 res.json({
                     mensaje: "successfully",
@@ -46,7 +46,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
             }
         })
     } catch (error) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
     }
 })
 
@@ -58,7 +58,7 @@ routes.get('/getfaltasinst/:idusuario', verificaToken, async (req, res) => {
 
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });;
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
             } else {
                 res.json({
                     mensaje: "successfully",
@@ -68,7 +68,7 @@ routes.get('/getfaltasinst/:idusuario', verificaToken, async (req, res) => {
             }
         })
     } catch (error) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
     }
 })
 
@@ -77,7 +77,7 @@ routes.get('/getfaltas/:idasistencia/:idinscripcion/:idpersona', verificaToken, 
         const rsfaltas = await vwfaltas.findAll({ where: { idasistencia: req.params.idasistencia, idinscripcion: req.params.idinscripcion, idpersona: req.params.idpersona } });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });;
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
             } else {
                 res.json({
                     mensaje: "successfully",
@@ -87,7 +87,7 @@ routes.get('/getfaltas/:idasistencia/:idinscripcion/:idpersona', verificaToken, 
             }
         })
     } catch (error) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
     }
 })
 
@@ -95,7 +95,7 @@ routes.get('/get/:idfaltas', verificaToken, async (req, res) => {
     const rsfaltas = await faltas.findByPk(req.params.idfaltas)
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({ error: "Error ", err });;
+            res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
         } else {
 
             res.json({
@@ -118,7 +118,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 t.commit();
                 console.log('Commitea')
@@ -130,7 +130,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         console.log('Rollback')
         t.rollback();
     }
@@ -146,7 +146,7 @@ routes.put('/put/:idfaltas', verificaToken, async (req, res) => {
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 t.commit();
                 res.json({
@@ -157,7 +157,7 @@ routes.put('/put/:idfaltas', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         console.log('Rollback update')
         t.rollback();
     }
@@ -173,7 +173,7 @@ routes.delete('/del/:idfaltas', verificaToken, async (req, res) => {
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });;
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
             } else {
                 t.commit();
                 res.json({
@@ -184,7 +184,7 @@ routes.delete('/del/:idfaltas', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         t.rollback();
     }
 })

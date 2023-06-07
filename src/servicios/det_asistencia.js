@@ -14,7 +14,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({ error: "Error ", err });
+            res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
         } else {
             res.json({
                 mensaje: "successfully",
@@ -32,7 +32,7 @@ routes.get('/getdetalle/:idasistencia/:idturno', verificaToken, async (req, res)
         const det_asistencias = await database.query(`select * from vw_asisdet where idasistencia = ${req.params.idasistencia} and idturno= ${req.params.idturno}`, { type: QueryTypes.SELECT })
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 res.json({
                     mensaje: "successfully",
@@ -42,7 +42,7 @@ routes.get('/getdetalle/:idasistencia/:idturno', verificaToken, async (req, res)
             }
         })
     } catch (error) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
     }
 })
 
@@ -53,7 +53,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({ error: "Error ", err });;
+            res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
         } else {
 
             res.json({
@@ -70,7 +70,7 @@ routes.get('/get/:iddet_asistencia', verificaToken, async (req, res) => {
     const det_asistencias = await det_asistencia.findByPk(req.params.iddet_asistencia)
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({ error: "Error ", err });;
+            res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
         } else {
 
             res.json({
@@ -93,7 +93,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 t.commit();
                 console.log('Commitea')
@@ -105,7 +105,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         console.log('Rollback')
         t.rollback();
     }
@@ -113,7 +113,6 @@ routes.post('/post/', verificaToken, async (req, res) => {
 
 /*Actualizador por varios parametros*/
 routes.put('/put/', verificaToken, async (req, res) => {
-    console.log(req.body)
     const t = await database.transaction();
     try {
         const det_asistencias = await det_asistencia.update(req.body, { where: { idinscripcion: req.body.idinscripcion, idasistencia: req.body.idasistencia } }, {
@@ -121,7 +120,7 @@ routes.put('/put/', verificaToken, async (req, res) => {
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 t.commit();
                 res.json({
@@ -132,8 +131,8 @@ routes.put('/put/', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({ error: "error catch" });
-        console.log('Rollback update')
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+        console.log('Rollback update',er)
         t.rollback();
     }
 })
@@ -142,23 +141,23 @@ routes.put('/put/:iddet_asistencia', verificaToken, async (req, res) => {
 
     const t = await database.transaction();
     try {
-        const det_asistencias = await det_asistencia.update(req.body, { where: { iddet_asistencia: req.params.iddet_asistencia } }, {
+        await det_asistencia.update(req.body, { where: { iddet_asistencia: req.params.iddet_asistencia } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 t.commit();
                 res.json({
                     mensaje: "Registro actualizado",
                     authData: authData,
-                    body: det_asistencias
+                    //body: det_asistencias
                 })
             }
         })
     } catch (er) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         console.log('Rollback update')
         t.rollback();
     }
@@ -174,7 +173,7 @@ routes.delete('/del/:iddet_asistencia', verificaToken, async (req, res) => {
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });;
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
             } else {
                 t.commit();
                 res.json({
@@ -185,7 +184,7 @@ routes.delete('/del/:iddet_asistencia', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         t.rollback();
     }
 })

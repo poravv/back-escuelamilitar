@@ -63,7 +63,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({ error: "Error ", err });
+            res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
         } else {
             res.json({
                 mensaje: "successfully",
@@ -72,7 +72,6 @@ routes.get('/get/', verificaToken, async (req, res) => {
             })
         }
     })
-
     //res.json(usuarios)
 })
 
@@ -85,7 +84,7 @@ routes.get('/get/:idusuario', verificaToken, async (req, res) => {
     })
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({ error: "Error ", err });
+            res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
         } else {
             res.json({
                 mensaje: "successfully",
@@ -99,12 +98,11 @@ routes.get('/get/:idusuario', verificaToken, async (req, res) => {
 routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
     req.body.password=md5(req.body.password);
-    
     try {
         const usuarios = await usuariomodel.create(req.body, { transaction: t })
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 t.commit();
                 res.json({
@@ -115,7 +113,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
             }
         })
     } catch (error) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         t.rollback();
     }
 
@@ -123,22 +121,36 @@ routes.post('/post/', verificaToken, async (req, res) => {
 
 routes.put('/put/:idusuario', verificaToken, async (req, res) => {
     const t = await database.transaction();
+    //console.log(req.body)
+    req.body.password=md5(req.body.password);
     try {
-        const usuarios = await usuariomodel.update(req.body, { where: { idusuario: req.params.idusuario }, transaction: t })
-        jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
-            if (err) {
-                res.json({ error: "Error ", err });
-            } else {
-                t.commit();
-                res.json({
-                    mensaje: "Registro actualizado",
-                    authData: authData,
-                    body: usuarios
-                })
-            }
-        })
+        await usuariomodel.update(req.body, { where: { idusuario: req.params.idusuario,password:md5(req.body.passwordAnterior) }, transaction: t }).then((rs) =>{
+            console.log('RS: ',rs)
+            jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+                if (err) {
+                    res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
+                } else {
+                    //console.log(rs)
+                    if(rs[0]===0){
+                        //console.log('Error')
+                        res.json({ error: "Error de Contraseña Actual" });
+                    }else{
+                        //console.log('Actualizado')
+                        t.commit();
+                        res.json({
+                            mensaje: "Usuario actualizado correctamente",
+                            authData: authData,
+                            body: rs
+                        })
+                    }
+    
+                    
+                }
+            })
+        });
+        
     } catch (error) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         t.rollback();
     }
 })
@@ -149,7 +161,7 @@ routes.delete('/del/:idusuario', verificaToken, async (req, res) => {
         const usuarios = await usuariomodel.destroy({ where: { idusuario: req.params.idusuario }, transaction: t })
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 t.commit();
                 res.json({
@@ -160,7 +172,7 @@ routes.delete('/del/:idusuario', verificaToken, async (req, res) => {
             }
         })
     } catch (error) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         t.rollback();
     }
 })

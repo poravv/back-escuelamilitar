@@ -1,19 +1,18 @@
 const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
-const evaluaciones = require("../model/model_evaluaciones")
-const database = require('../database')
-const{QueryTypes}=require("sequelize")
-const verificaToken = require('../middleware/token_extractor')
-require("dotenv").config()
-
+const evaluaciones = require("../model/model_evaluaciones");
+const database = require('../database');
+const { QueryTypes } = require("sequelize");
+const verificaToken = require('../middleware/token_extractor');
+require("dotenv").config();
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const rs_evaluaciones = await database.query('select * from evaluaciones order by descripcion asc',{type: QueryTypes.SELECT})
+    const rs_evaluaciones = await database.query('select * from evaluaciones order by descripcion asc', { type: QueryTypes.SELECT })
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({error: "Error ",err});
+            res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
         } else {
             res.json({
                 mensaje: "successfully",
@@ -26,57 +25,58 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 
 
-routes.get('/getevaluaciones/:idconvocatoria/:idinscripcion', verificaToken, async (req, res) => {
+routes.get('/getdetevaluaciones/:idconvocatoria/:idinscripcion', verificaToken, async (req, res) => {
     try {
         await database.query(`CALL p_genera_proceso(${req.params.idconvocatoria},@a);`);
-    const rs_evaluaciones = await database.query(`select mv.* from (select @cnv_evaluacion:=${req.params.idconvocatoria}) cnv, (select @idinsc_evaluacion:=${req.params.idinscripcion}) ins, vw_det_evaluaciones mv`,{type: QueryTypes.SELECT});
-    jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
-        if (err) {
-            res.json({error: "Error ",err});
-        } else {
-            res.json({
-                mensaje: "successfully",
-                authData: authData,
-                body: rs_evaluaciones
-            })
-        }
-    })
+        const rs_evaluaciones = await database.query(`select * from  vw_det_evaluaciones where idconvocatoria= ${req.params.idconvocatoria} and idinscripcion=${req.params.idinscripcion}`, { type: QueryTypes.SELECT });
+        jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+            if (err) {
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
+            } else {
+                res.json({
+                    mensaje: "successfully",
+                    authData: authData,
+                    body: rs_evaluaciones
+                })
+            }
+        })
     } catch (error) {
-        res.json({error: "error catch"});
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
     }
 })
+
 
 
 routes.get('/getproceso/:idconvocatoria/:idmateria', verificaToken, async (req, res) => {
     try {
         await database.query(`CALL p_genera_proceso(${req.params.idconvocatoria},@a);`);
-    const rs_evaluaciones = await database.query(`select * from vw_proceso where idconvocatoria= ${req.params.idconvocatoria} and idmateria=${req.params.idmateria}`,{type: QueryTypes.SELECT});
-    jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
-        if (err) {
-            res.json({error: "Error ",err});
-        } else {
-            res.json({
-                mensaje: "successfully",
-                authData: authData,
-                body: rs_evaluaciones
-            })
-        }
-    })
+        const rs_evaluaciones = await database.query(`select * from vw_proceso where idconvocatoria= ${req.params.idconvocatoria} and idmateria=${req.params.idmateria}`, { type: QueryTypes.SELECT });
+        jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+            if (err) {
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
+            } else {
+                res.json({
+                    mensaje: "successfully",
+                    authData: authData,
+                    body: rs_evaluaciones
+                })
+            }
+        })
     } catch (error) {
-        res.json({error: "error catch"});
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
     }
 })
 
 
 routes.get('/get/', verificaToken, async (req, res) => {
-    
+
     const rs_evaluaciones = await evaluaciones.findAll();
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({error: "Error ",err});;
+            res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
         } else {
-            
+
             res.json({
                 mensaje: "successfully",
                 authData: authData,
@@ -91,9 +91,9 @@ routes.get('/get/:idevaluaciones', verificaToken, async (req, res) => {
     const rs_evaluaciones = await evaluaciones.findByPk(req.params.idevaluaciones)
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({error: "Error ",err});;
+            res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
         } else {
-            
+
             res.json({
                 mensaje: "successfully",
                 authData: authData,
@@ -107,14 +107,14 @@ routes.get('/get/:idevaluaciones', verificaToken, async (req, res) => {
 
 routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
-    
+
     try {
         const rs_evaluaciones = await evaluaciones.create(req.body, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({error: "Error ",err});
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 t.commit();
                 console.log('Commitea')
@@ -126,7 +126,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         console.log('Rollback')
         t.rollback();
     }
@@ -135,13 +135,14 @@ routes.post('/post/', verificaToken, async (req, res) => {
 routes.put('/put/:idinscripcion/:idmateria', verificaToken, async (req, res) => {
     const t = await database.transaction();
     try {
-        const rs_evaluaciones = await evaluaciones.update(req.body, 
-            { where: { idmateria: req.params.idmateria,idinscripcion: req.params.idinscripcion } }, 
-            {transaction: t
+        const rs_evaluaciones = await evaluaciones.update(req.body,
+            { where: { idmateria: req.params.idmateria, idinscripcion: req.params.idinscripcion } },
+            {
+                transaction: t
             });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({error: "Error ",err});
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 t.commit();
                 res.json({
@@ -152,7 +153,7 @@ routes.put('/put/:idinscripcion/:idmateria', verificaToken, async (req, res) => 
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         console.log('Rollback update')
         t.rollback();
     }
@@ -160,15 +161,15 @@ routes.put('/put/:idinscripcion/:idmateria', verificaToken, async (req, res) => 
 
 routes.delete('/del/:idevaluaciones', verificaToken, async (req, res) => {
 
-    const t = await  database.transaction();
-    
+    const t = await database.transaction();
+
     try {
         const rs_evaluaciones = await evaluaciones.destroy({ where: { idevaluaciones: req.params.idevaluaciones } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({error: "Error ",err});;
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
             } else {
                 t.commit();
                 res.json({
@@ -179,7 +180,7 @@ routes.delete('/del/:idevaluaciones', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         t.rollback();
     }
 })

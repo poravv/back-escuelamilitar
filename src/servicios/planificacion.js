@@ -5,6 +5,7 @@ const planificacion = require("../model/model_planificacion")
 const vw_planificacion = require("../model/model_vwplanificacion")
 const curso = require("../model/model_curso")
 const materia = require("../model/model_materia")
+const sucursal = require("../model/model_sucursal")
 const instructor = require("../model/model_instructor")
 const persona = require("../model/model_persona")
 const det_planificacion = require("../model/model_det_planificacion")
@@ -19,7 +20,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
     const planificaciones = await database.query('select * from planificacion order by descripcion asc', { type: QueryTypes.SELECT })
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({ error: "Error ", err });
+            res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
         } else {
             res.json({
                 mensaje: "successfully",
@@ -35,7 +36,7 @@ routes.get('/getplaninst/:idpersona', verificaToken, async (req, res) => {
         const planificaciones = await database.query(`select * from vw_curso_instructor where idpersona = ${req.params.idpersona}`, { type: QueryTypes.SELECT });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 res.json({
                     mensaje: "successfully",
@@ -54,6 +55,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
         const planificaciones = await vw_planificacion.findAll({
             include: [
                 { model: curso },
+                { model: sucursal },
                 {
                     model: det_planificacion,
                     include: [
@@ -66,7 +68,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
 
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });;
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
             } else {
                 res.json({
                     mensaje: "successfully",
@@ -85,6 +87,7 @@ routes.get('/get1/', verificaToken, async (req, res) => {
     const planificaciones = await planificacion.findAll({
         include: [
             { model: curso },
+            { model: sucursal },
             {
                 model: det_planificacion,
                 include: [
@@ -99,7 +102,7 @@ routes.get('/get1/', verificaToken, async (req, res) => {
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({ error: "Error ", err });;
+            res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
         } else {
             res.json({
                 mensaje: "successfully",
@@ -115,7 +118,7 @@ routes.get('/get/:idplanificacion', verificaToken, async (req, res) => {
     const planificaciones = await planificacion.findByPk(req.params.idplanificacion)
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({ error: "Error ", err });;
+            res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
         } else {
 
             res.json({
@@ -138,7 +141,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 t.commit();
                 console.log('Commitea')
@@ -150,7 +153,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         console.log('Rollback')
         t.rollback();
     }
@@ -165,7 +168,7 @@ routes.put('/put/:idplanificacion', verificaToken, async (req, res) => {
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 t.commit();
                 res.json({
@@ -176,7 +179,7 @@ routes.put('/put/:idplanificacion', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         console.log('Rollback update')
         t.rollback();
     }
@@ -192,7 +195,7 @@ routes.delete('/del/:idplanificacion', verificaToken, async (req, res) => {
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });;
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });;
             } else {
                 t.commit();
                 res.json({
@@ -203,7 +206,7 @@ routes.delete('/del/:idplanificacion', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({ error: "error catch" });
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         t.rollback();
     }
 })

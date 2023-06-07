@@ -1,6 +1,7 @@
 const{DataTypes}=require("sequelize")
 const database = require("../database")
 const anho_lectivo=require("./model_anho_lectivo")
+const sucursal=require("./model_sucursal")
 const curso=require("./model_curso")
 const det_planificacion=require("./model_det_planificacion")
 
@@ -26,6 +27,18 @@ const planificacion=database.define("planificacion",{
         type: DataTypes.INTEGER,
         allowNull:false
     },
+    titulo_obtenido: {
+        type: DataTypes.STRING,
+        allowNull:false
+    },
+    duracion: {
+        type: DataTypes.STRING,
+        allowNull:false
+    },
+    idsucursal: {
+        type: DataTypes.INTEGER,
+        allowNull:false
+    },
 },{
     tableName:"Planificacion",
     timestamps:false
@@ -36,6 +49,12 @@ planificacion.hasMany(det_planificacion,{
     foreignKey:"idplanificacion",
     primaryKey:"idplanificacion",
     sourceKey:"idplanificacion"
+});
+
+planificacion.hasMany(sucursal,{
+    foreignKey:"idsucursal",
+    primaryKey:"idsucursal",
+    sourceKey:"idsucursal"
 });
 
 

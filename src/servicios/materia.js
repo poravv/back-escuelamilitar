@@ -62,7 +62,7 @@ routes.get('/get/:idmateria', verificaToken, async (req, res) => {
     })
 })
 
-
+ 
 routes.get('/getmatcnv/:idconvocatoria', verificaToken, async (req, res) => {
     const materiaes = await vw_mat_cnv.findAll({where: { idconvocatoria:req.params.idconvocatoria }});
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -99,7 +99,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         console.log('Rollback')
         t.rollback();
     }
@@ -125,7 +125,7 @@ routes.put('/put/:idmateria', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         console.log('Rollback update')
         t.rollback();
     }
@@ -152,7 +152,7 @@ routes.delete('/del/:idmateria', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         t.rollback();
     }
 })

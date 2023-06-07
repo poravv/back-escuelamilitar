@@ -16,11 +16,11 @@ const vw_convocatoria=database.define("vw_convocatoria",{
     },
     cant_cuotas:{
         type: DataTypes.STRING,
-        allowNull:false
+        //allowNull:false
     },
     monto_cuota:{
         type: DataTypes.DECIMAL,
-        allowNull:false
+        //allowNull:false
     },
     finicio:{
         type:DataTypes.DATE,
@@ -50,6 +50,9 @@ const vw_convocatoria=database.define("vw_convocatoria",{
         type:DataTypes.DATE,
         allowNull:false
     },
+    modalidad: {
+        type: DataTypes.STRING
+    }
 },{
     tableName:"VW_convocatoria",
     timestamps:false

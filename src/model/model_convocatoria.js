@@ -16,11 +16,11 @@ const convocatoria=database.define("convocatoria",{
     },
     cant_cuotas:{
         type: DataTypes.STRING,
-        allowNull:false
+        //allowNull:false
     },
     monto_cuota:{
         type: DataTypes.DECIMAL,
-        allowNull:false
+        //allowNull:false
     },
     finicio:{
         type:DataTypes.DATE,
@@ -49,6 +49,9 @@ const convocatoria=database.define("convocatoria",{
     ffin:{
         type:DataTypes.DATE,
         allowNull:false
+    },
+    modalidad: {
+        type: DataTypes.STRING,
     },
 },{
     tableName:"Convocatoria",

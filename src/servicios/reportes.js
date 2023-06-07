@@ -1,13 +1,14 @@
 const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
-const vw_reporte_gral = require("../model/model_vw_reporte_general")
+//const vw_reporte_gral = require("../model/model_vw_reporte_general")
 const vw_reporte_mat = require("../model/model_vw_reporte_materia")
-const convocatoria = require("../model/model_convocatoria")
+const vw_certificado_cab = require("../model/model_vw_certificado_cab")
+//const convocatoria = require("../model/model_convocatoria")
 //const vw_convocatoria = require("../model/model_vwconvocatoria")
-const planificacion = require("../model/model_planificacion")
-const curso = require("../model/model_curso")
-const turno = require("../model/model_turno")
+//const planificacion = require("../model/model_planificacion")
+//const curso = require("../model/model_curso")
+//const turno = require("../model/model_turno")
 const database = require('../database')
 const { QueryTypes } = require("sequelize")
 const verificaToken = require('../middleware/token_extractor');
@@ -35,7 +36,7 @@ routes.get('/getconvocatoria/:anho1/:anho2/:estado', verificaToken, async (req, 
         }
         //convocatorias = await convocatoria.findAll({include: [{ model: planificacion,include: [{ model: curso },] },{ model: turno },]});
 
-        jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => { if (err) { res.json({ error: "Error ", err }); } else { res.json({ mensaje: "successfully", authData: authData, body: convocatorias }) } })
+        jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => { if (err) { res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err }); } else { res.json({ mensaje: "successfully", authData: authData, body: convocatorias }) } })
     } catch (error) { res.json({ error: "Error" }); }
 });
 
@@ -48,24 +49,57 @@ routes.get('/getreportegral/:idconvocatoria/', verificaToken, async (req, res) =
         //const rs_evaluaciones = await database.query(`select * from vw_reporte_general where idconvocatoria = ${req.params.idconvocatoria}`, { type: QueryTypes.SELECT })
         //console.log(rs_evaluaciones)
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
-            if (err) { res.json({ error: "Error ", err }); }
+            if (err) { res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err }); }
             else { res.json({ mensaje: "successfully", authData: authData, body: rs_evaluaciones }) }
         });
     } catch (err) {
-         res.json({ error: "error catch" });
+         res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
          //console.log(err)
         }
+})
+
+
+routes.get('/getcertevaluacion/:idconvocatoria/:idinscripcion', verificaToken, async (req, res) => {
+    try {
+        const rs_evaluaciones = await database.query(`select * from  vw_evaluaciones where idconvocatoria= ${req.params.idconvocatoria} and idinscripcion=${req.params.idinscripcion}`, { type: QueryTypes.SELECT });
+        jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+            if (err) {
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
+            } else {
+                res.json({
+                    mensaje: "successfully",
+                    authData: authData,
+                    body: rs_evaluaciones
+                })
+            }
+        })
+    } catch (error) {
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+    }
 })
 
 routes.get('/getreportemat/:idconvocatoria/:idmateria', verificaToken, async (req, res) => {
     try {
         const rs_evaluaciones = await vw_reporte_mat.findAll({ where: { idconvocatoria: req.params.idconvocatoria, idmateria:req.params.idmateria  } });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
-            if (err) { res.json({ error: "Error ", err }); }
+            if (err) { res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err }); }
             else { res.json({ mensaje: "successfully", authData: authData, body: rs_evaluaciones }) }
         });
     } catch (err) {
-         res.json({ error: "error catch" });
+         res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+         //console.log(err)
+        }
+})
+
+routes.get('/getcertcab/:idinscripcion/', verificaToken, async (req, res) => {
+    try {
+        const rs_evaluaciones = await vw_certificado_cab.findAll({ where: { idinscripcion: req.params.idinscripcion } });
+        jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+            if (err) { res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err }); }
+            else { res.json({ mensaje: "successfully", authData: authData, body: rs_evaluaciones }) }
+        });
+    } catch (err) {
+         res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
          //console.log(err)
         }
 })

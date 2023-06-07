@@ -94,7 +94,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         console.log('Rollback')
         t.rollback();
     }
@@ -120,7 +120,7 @@ routes.put('/put/:idinstructor', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         console.log('Rollback update')
         t.rollback();
     }
@@ -147,7 +147,7 @@ routes.delete('/del/:idinstructor', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         t.rollback();
     }
 })

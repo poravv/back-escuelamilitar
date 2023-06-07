@@ -24,11 +24,23 @@ const sucursal=database.define("sucursal",{
         type: DataTypes.STRING,
         allowNull:false
     },
+    director:{
+        type: DataTypes.STRING,
+        allowNull:false
+    },
     img:{
         type:DataTypes.BLOB("long")
     },
     idciudad: {
         type: DataTypes.INTEGER,
+        allowNull:false
+    },
+    director: {
+        type: DataTypes.STRING,
+        allowNull:false
+    },
+    cargo: {
+        type: DataTypes.STRING,
         allowNull:false
     }
 },{

@@ -21,9 +21,12 @@ const persona = require('./servicios/persona')
 const planificacion = require('./servicios/planificacion')
 const sucursal = require('./servicios/sucursal')
 const turno = require('./servicios/turno')
+const area = require('./servicios/area')
+const tesis = require('./servicios/tesis')
 const usuario = require('./servicios/usuario')
 const aptitud = require('./servicios/aptitud')
 const reportes = require('./servicios/reportes')
+const reportes_emitidos = require('./servicios/reportes_emitidos')
 
 
 rutas.use('/empy/api/ciudad',ciudad);   
@@ -32,6 +35,8 @@ rutas.use('/empy/api/anho_lectivo',anho_lectivo);
 rutas.use('/empy/api/asistencia',asistencia);
 rutas.use('/empy/api/convocatoria',convocatoria);
 rutas.use('/empy/api/cuotas',cuotas);
+rutas.use('/empy/api/area',area);
+rutas.use('/empy/api/tesis',tesis);
 rutas.use('/empy/api/curso',curso);
 rutas.use('/empy/api/det_asistencia',det_asistencia);
 rutas.use('/empy/api/det_planificacion',det_planificacion);
@@ -49,5 +54,6 @@ rutas.use('/empy/api/sucursal',sucursal);
 rutas.use('/empy/api/turno',turno);
 rutas.use('/empy/api/usuario',usuario);
 rutas.use('/empy/api/reportes',reportes);
+rutas.use('/empy/api/reportes_emitidos',reportes_emitidos);
 
 module.exports = rutas;

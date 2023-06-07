@@ -39,7 +39,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
     
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({ error: "Error ", err });
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
             } else {
                 res.json({
                     mensaje: "successfully",
@@ -118,7 +118,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         console.log('Rollback')
         t.rollback();
     }
@@ -144,7 +144,7 @@ routes.put('/put/:idconvocatoria', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         console.log('Rollback update')
         t.rollback();
     }
@@ -171,7 +171,7 @@ routes.delete('/del/:idconvocatoria', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         t.rollback();
     }
 })

@@ -127,10 +127,10 @@ routes.post('/post/', verificaToken, async (req, res) => {
             
         })
         await database.query(`update convocatoria set cupo=(cupo-1) where idconvocatoria = ${req.body.idconvocatoria}`);
-        await database.query(`CALL p_carga_cuotas(${inscripciones.idinscripcion},${req.body.idpersona},${req.body.idconvocatoria},@a)`);
+        //await database.query(`CALL p_carga_cuotas(${inscripciones.idinscripcion},${req.body.idpersona},${req.body.idconvocatoria},@a)`);
 
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         console.log('Rollback')
         t.rollback();
     }
@@ -156,7 +156,7 @@ routes.put('/put/:idinscripcion', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         console.log('Rollback update')
         t.rollback();
     }
@@ -183,7 +183,7 @@ routes.delete('/del/:idinscripcion', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "error catch"});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
         t.rollback();
     }
 })
