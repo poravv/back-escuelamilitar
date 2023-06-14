@@ -44,6 +44,28 @@ routes.get('/get/', verificaToken, async (req, res) => {
     })
 })
 
+routes.get('/getcursoinscripcion/:idpersona', verificaToken, async (req, res) => {
+    try {
+        await database.query(`select * from vw_cursos_inscripcion where idpersona = ${req.params.idpersona}`, { type: QueryTypes.SELECT }).then((cursos) => {
+
+            jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+                if (err) {
+                    res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
+                } else {
+                    res.json({
+                        mensaje: "successfully",
+                        authData: authData,
+                        body: cursos
+                    })
+                }
+            })
+        });
+        
+    } catch (error) {
+        res.json({ error: "Error ", error });
+    }
+})
+
 routes.get('/get/:idcurso', verificaToken, async (req, res) => {
     const cursoes = await curso.findByPk(req.params.idcurso)
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {

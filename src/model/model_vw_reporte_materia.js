@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize")
 const database = require("../database")
 
 const vw_reporte_mat = database.define("vw_reporte_materia", {
-    rownum: { type: DataTypes.INTEGER,primaryKey: true },
+    numero: { type: DataTypes.INTEGER,primaryKey: true },
     nombre: { type: DataTypes.STRING, },
     apellido: { type: DataTypes.STRING, },
     documento: { type: DataTypes.STRING, },

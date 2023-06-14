@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize")
 const database = require("../database")
 
-const vw_mat_cnv = database.define("reportes_emitidos", {
+const reportes_emitidos = database.define("reportes_emitidos", {
 
     idreporte: { type: DataTypes.INTEGER,primaryKey: true },
     tipo: { type: DataTypes.STRING,},
@@ -15,4 +15,4 @@ const vw_mat_cnv = database.define("reportes_emitidos", {
     timestamps: false
 })
 
-module.exports = vw_mat_cnv
+module.exports = reportes_emitidos

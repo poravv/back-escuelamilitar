@@ -50,6 +50,7 @@ routes.get('/getplaninst/:idpersona', verificaToken, async (req, res) => {
     }
 })
 
+
 routes.get('/get/', verificaToken, async (req, res) => {
     try {
         const planificaciones = await vw_planificacion.findAll({

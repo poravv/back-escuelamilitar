@@ -46,11 +46,31 @@ routes.get('/getdetevaluaciones/:idconvocatoria/:idinscripcion', verificaToken, 
 })
 
 
-
 routes.get('/getproceso/:idconvocatoria/:idmateria', verificaToken, async (req, res) => {
     try {
         await database.query(`CALL p_genera_proceso(${req.params.idconvocatoria},@a);`);
         const rs_evaluaciones = await database.query(`select * from vw_proceso where idconvocatoria= ${req.params.idconvocatoria} and idmateria=${req.params.idmateria}`, { type: QueryTypes.SELECT });
+        jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+            if (err) {
+                res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
+            } else {
+                res.json({
+                    mensaje: "successfully",
+                    authData: authData,
+                    body: rs_evaluaciones
+                })
+            }
+        })
+    } catch (error) {
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+    }
+})
+
+
+routes.get('/getprocesoinscripcion/:idconvocatoria/:idinscripcion', verificaToken, async (req, res) => {
+    try {
+        await database.query(`CALL p_genera_proceso(${req.params.idconvocatoria},@a);`);
+        const rs_evaluaciones = await database.query(`select * from vw_proceso_materia where idconvocatoria= ${req.params.idconvocatoria} and idinscripcion=${req.params.idinscripcion}`, { type: QueryTypes.SELECT });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
                 res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });

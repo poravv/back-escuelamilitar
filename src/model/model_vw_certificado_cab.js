@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize")
 const database = require("../database")
 
-const vw_mat_cnv = database.define("vw_certificado_cab", {
+const vw_certificado_cab = database.define("vw_certificado_cab", {
     idinscripcion: { type: DataTypes.INTEGER,primaryKey: true },
     nombres: { type: DataTypes.STRING,},
     documento: { type: DataTypes.STRING },
@@ -34,4 +34,4 @@ const vw_mat_cnv = database.define("vw_certificado_cab", {
     timestamps: false
 })
 
-module.exports = vw_mat_cnv
+module.exports = vw_certificado_cab
