@@ -123,7 +123,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
     try {
         await inscripcion.create(req.body, {
             transaction: t
-        }).then( async (inscripciones) => {
+        }).then(async (inscripciones) => {
             jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
                 if (err) {
                     res.json({ error: "Error ", err });
@@ -137,9 +137,14 @@ routes.post('/post/', verificaToken, async (req, res) => {
                     });
                 }
             })
-            await database.query(`update convocatoria set cupo=(cupo-1) where idconvocatoria = ${req.body.idconvocatoria}`);
-            //await database.query(`CALL p_carga_cuotas(${inscripciones.idinscripcion},${req.body.idpersona},${req.body.idconvocatoria},@a)`);
-            await database.query(`CALL p_genera_usuario(${inscripciones.idpersona},${inscripciones.idconvocatoria},@a)`);
+            try {
+                await database.query(`update convocatoria set cupo=(cupo-1) where idconvocatoria = ${req.body.idconvocatoria}`);
+                //await database.query(`CALL p_carga_cuotas(${inscripciones.idinscripcion},${req.body.idpersona},${req.body.idconvocatoria},@a)`);
+                await database.query(`CALL p_genera_usuario(${inscripciones.idpersona},${inscripciones.idconvocatoria},@a)`);
+            } catch (error) {
+                console.log(error);
+                return;
+            }
         });
 
     } catch (er) {

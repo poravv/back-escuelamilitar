@@ -2,18 +2,19 @@ const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
 const detalle_documentos = require("../model/model_detalle_documentos")
+const vw_det_documentos = require("../model/model_vw_det_documentos.js")
 const database = require('../database')
-const{QueryTypes}=require("sequelize")
+const { QueryTypes } = require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
 require("dotenv").config()
 
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
-    const detalle_documentoses = await database.query('select * from detalle_documentos order by descripcion asc',{type: QueryTypes.SELECT})
+    const detalle_documentoses = await database.query('select * from detalle_documentos order by descripcion asc', { type: QueryTypes.SELECT })
 
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({error: "Error ",err});
+            res.json({ error: "Error ", err });
         } else {
             res.json({
                 mensaje: "successfully",
@@ -26,21 +27,42 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 
 routes.get('/get/', verificaToken, async (req, res) => {
-    
-    const detalle_documentoses = await detalle_documentos.findAll();
+    try {
+        const detalle_documentoses = await detalle_documentos.findAll();
+        jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+            if (err) {
+                res.json({ error: "Error ", err });;
+            } else {
 
-    jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+                res.json({
+                    mensaje: "successfully",
+                    authData: authData,
+                    body: detalle_documentoses
+                })
+            }
+
+        });
+    } catch (error) {
+        res.json({ error: "Error en el servidor" });
+        console.log('Error ');
+    }
+});
+
+routes.get('/vw_det_documentos/:idinscripcion', verificaToken, (req, res) => {
+    
+    jwt.verify(req.token, process.env.CLAVESECRETA, async (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});;
         } else {
+            await vw_det_documentos.findAll({where:{idinscripcion: req.params.idinscripcion }}).then((resultado) =>{
+                res.json({
+                    mensaje: "successfully",
+                    authData: authData,
+                    body: resultado
+                });
+            });
             
-            res.json({
-                mensaje: "successfully",
-                authData: authData,
-                body: detalle_documentoses
-            })
         }
-
     })
 })
 
@@ -48,9 +70,9 @@ routes.get('/get/:iddetalle_documentos', verificaToken, async (req, res) => {
     const detalle_documentoses = await detalle_documentos.findByPk(req.params.iddetalle_documentos)
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
-            res.json({error: "Error ",err});;
+            res.json({ error: "Error ", err });;
         } else {
-            
+
             res.json({
                 mensaje: "successfully",
                 authData: authData,
@@ -64,14 +86,13 @@ routes.get('/get/:iddetalle_documentos', verificaToken, async (req, res) => {
 
 routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
-    
     try {
         const detalle_documentoses = await detalle_documentos.create(req.body, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({error: "Error ",err});
+                res.json({ error: "Error ", err });
             } else {
                 t.commit();
                 console.log('Commitea')
@@ -83,8 +104,8 @@ routes.post('/post/', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
-        console.log('Rollback')
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+        console.log('Rollback: ',er)
         t.rollback();
     }
 })
@@ -98,7 +119,7 @@ routes.put('/put/:iddetalle_documentos', verificaToken, async (req, res) => {
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({error: "Error ",err});
+                res.json({ error: "Error ", err });
             } else {
                 t.commit();
                 res.json({
@@ -109,23 +130,23 @@ routes.put('/put/:iddetalle_documentos', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         console.log('Rollback update')
         t.rollback();
     }
 })
 
-routes.delete('/del/:iddetalle_documentos', verificaToken, async (req, res) => {
+routes.delete('/del/:iddocumentos/:idinscripcion', verificaToken, async (req, res) => {
 
-    const t = await  database.transaction();
-    
+    const t = await database.transaction();
+
     try {
-        const detalle_documentoses = await detalle_documentos.destroy({ where: { iddetalle_documentos: req.params.iddetalle_documentos } }, {
+        const detalle_documentoses = await detalle_documentos.destroy({ where: { iddocumentos: req.params.iddocumentos,idinscripcion:req.params.idinscripcion } }, {
             transaction: t
         });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
-                res.json({error: "Error ",err});;
+                res.json({ error: "Error ", err });;
             } else {
                 t.commit();
                 res.json({
@@ -136,7 +157,7 @@ routes.delete('/del/:iddetalle_documentos', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         t.rollback();
     }
 })

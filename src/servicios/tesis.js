@@ -50,14 +50,12 @@ routes.get('/getvw/:idinscripcion', verificaToken, async (req, res) => {
         if (err) {
             res.json({error: "Error ",err});;
         } else {
-            
             res.json({
                 mensaje: "successfully",
                 authData: authData,
                 body: tesises
             })
         }
-
     })
 })
 

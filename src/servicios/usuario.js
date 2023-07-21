@@ -22,7 +22,7 @@ routes.post('/login/', async (req, res) => {
                 //{ model: sucursal },
                 { model: persona }
             ]
-        })
+        });
 
         if (rsusuario.length != 0) {
             jwt.sign({ rsusuario }, process.env.CLAVESECRETA
@@ -34,7 +34,6 @@ routes.post('/login/', async (req, res) => {
                         body: rsusuario
                     });
                 });
-
         } else {
             return res.status(400).json(
                 {
