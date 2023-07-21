@@ -44,7 +44,7 @@ const sucursal=database.define("sucursal",{
         allowNull:false
     }
 },{
-    tableName:"Sucursal",
+    tableName:"sucursal",
     timestamps:false
 })
 

@@ -1,7 +1,7 @@
 const{DataTypes}=require("sequelize")
 const database=require("../database")
 
-const aptitud_militar = database.define("Aptitud_militar",{
+const aptitud_militar = database.define("aptitud_militar",{
     
     idaptitud_militar:{
         type:DataTypes.INTEGER,

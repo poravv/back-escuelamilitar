@@ -23,7 +23,7 @@ const instructor=database.define("instructor",{
         required:true
     }
 },{
-    tableName:"Instructor",
+    tableName:"instructor",
     timestamps:false
 })
 

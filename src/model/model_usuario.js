@@ -1,41 +1,41 @@
-const DataType = require('sequelize')
+const DataTypes = require('sequelize')
 const database = require('../database')
 const sucursal= require('./model_sucursal')
 const persona= require('./model_persona')
 
 const usuario= database.define("usuario",{
     idusuario:{
-        type: DataType.INTEGER,
+        type: DataTypes.INTEGER,
         primaryKey:true,
         autoIncrement:true
     },
     usuario:{
-        type:DataType.STRING,
+        type:DataTypes.STRING,
         allowNull:false
     },
     password:{
-        type:DataType.STRING,
+        type:DataTypes.STRING,
         allowNull:false
     },
     estado:{
-        type:DataType.STRING,
+        type:DataTypes.STRING,
         allowNull:false
     },
     nivel:{
-        type: DataType.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull:false
     },
     idpersona:{
-        type:DataType.INTEGER,
+        type:DataTypes.INTEGER,
         allowNull:false
     },
     idsucursal:{
-        type:DataType.INTEGER,
+        type:DataTypes.INTEGER,
         allowNull:false
     },
 },
 {
-    tableName:"Usuario",
+    tableName:"usuario",
     timestamps:false
 })
 

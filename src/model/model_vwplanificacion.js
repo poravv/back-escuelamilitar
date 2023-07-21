@@ -75,4 +75,4 @@ vw_planificacion.hasMany(sucursal,{
 });
 
 
-module.exports=vw_planificacion
+module.exports=vw_planificacion;

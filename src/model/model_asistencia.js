@@ -26,7 +26,7 @@ const asistencia = database.define("asistencia",{
         allowNull:true
     },
 },{
-    tableName:"Asistencia",
+    tableName:"asistencia",
     timestamps:false
 })
 

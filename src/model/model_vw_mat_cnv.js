@@ -8,7 +8,7 @@ const vw_mat_cnv = database.define("vw_mat_cnv", {
     idconvocatoria: { type: DataTypes.INTEGER,primaryKey: true },
     descripcion: { type: DataTypes.STRING,},
 }, {
-    tableName: "Vw_mat_cnv",
+    tableName: "vw_mat_cnv",
     timestamps: false
 })
 

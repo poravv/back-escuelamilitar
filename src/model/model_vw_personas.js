@@ -74,11 +74,9 @@ const vw_personas = database.define("vw_personas",{
         type:DataTypes.STRING,
         allowNull:false
     },
-    
-
 },
 {
-    tableName:"Vw_personas",
+    tableName:"vw_personas",
     timestamps:false
 })
 

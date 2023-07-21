@@ -38,7 +38,7 @@ const det_planificacion=database.define("det_planificacion",{
     },
    
 },{
-    tableName:"Det_planificacion",
+    tableName:"det_planificacion",
     timestamps:false
 })
 

@@ -28,7 +28,7 @@ const vw_reporte_mat = database.define("vw_reporte_materia", {
     turno: { type: DataTypes.STRING, },
     curso: { type: DataTypes.STRING, },
 }, {
-    tableName: "Vw_reporte_materia",
+    tableName: "vw_reporte_materia",
     timestamps: false
 })
 

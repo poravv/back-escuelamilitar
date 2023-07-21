@@ -54,7 +54,7 @@ const vw_convocatoria=database.define("vw_convocatoria",{
         type: DataTypes.STRING
     }
 },{
-    tableName:"VW_convocatoria",
+    tableName:"vw_convocatoria",
     timestamps:false
 })
 

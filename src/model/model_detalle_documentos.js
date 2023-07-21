@@ -31,7 +31,7 @@ const detalle_documentos = database.define("detalle_documentos",{
     },
 },
 {
-    tableName:"Detalle_documentos",
+    tableName:"detalle_documentos",
     timestamps:false
 })
 

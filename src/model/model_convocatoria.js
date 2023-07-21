@@ -54,7 +54,7 @@ const convocatoria=database.define("convocatoria",{
         type: DataTypes.STRING,
     },
 },{
-    tableName:"Convocatoria",
+    tableName:"convocatoria",
     timestamps:false
 })
 

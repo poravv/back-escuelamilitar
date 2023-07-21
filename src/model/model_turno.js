@@ -17,7 +17,7 @@ const turno = database.define("turno",{
         allowNull:true
     }
 },{
-    tableName:"Turno",
+    tableName:"turno",
     timestamps:false
 })
 

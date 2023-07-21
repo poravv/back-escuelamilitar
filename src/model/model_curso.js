@@ -17,7 +17,7 @@ const curso = database.define("curso",{
         allowNull:true
     }
 },{
-    tableName:"Curso",
+    tableName:"curso",
     timestamps:false
 })
 

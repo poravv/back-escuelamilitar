@@ -20,7 +20,7 @@ const ciudad = database.define("grados_arma",{
         allowNull:true
     }
 },{
-    tableName:"Grados_arma",
+    tableName:"grados_arma",
     timestamps:false
 })
 

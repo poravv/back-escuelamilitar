@@ -34,7 +34,7 @@ const faltas=database.define("faltas",{
         allowNull:false
     },
 },{
-    tableName:"Faltas",
+    tableName:"faltas",
     timestamps:false
 })
 

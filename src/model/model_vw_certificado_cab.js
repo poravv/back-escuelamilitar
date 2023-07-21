@@ -30,7 +30,7 @@ const vw_certificado_cab = database.define("vw_certificado_cab", {
     cargo: { type: DataTypes.STRING,},
     idtesis: { type: DataTypes.INTEGER,},
 }, {
-    tableName: "Vw_certificado_cab",
+    tableName: "vw_certificado_cab",
     timestamps: false
 })
 

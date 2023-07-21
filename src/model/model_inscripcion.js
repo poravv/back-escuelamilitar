@@ -33,7 +33,7 @@ const inscripcion=database.define("inscripcion",{
         primaryKey:true
     }
 },{
-    tableName:"Inscripcion",
+    tableName:"inscripcion",
     timestamps:false
 })
 

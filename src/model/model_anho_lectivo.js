@@ -17,7 +17,7 @@ const anho_lectivo = database.define("anho_lectivo",{
         allowNull:true
     }
 },{
-    tableName:"Anho_lectivo",
+    tableName:"anho_lectivo",
     timestamps:false
 })
 

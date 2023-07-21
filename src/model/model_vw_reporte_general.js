@@ -29,7 +29,7 @@ const vw_reporte_gral = database.define("vw_reporte_general", {
     columna18: { type: DataTypes.STRING },
     columna19: { type: DataTypes.STRING },
 }, {
-    tableName: "Vw_reporte_general",
+    tableName: "vw_reporte_general",
     timestamps: false
 })
 

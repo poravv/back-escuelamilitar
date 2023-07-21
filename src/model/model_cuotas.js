@@ -38,7 +38,7 @@ const cuotas=database.define("cuotas",{
         allowNull:false
     }
 },{
-    tableName:"Sucursal",
+    tableName:"cuota",
     timestamps:false
 })
 

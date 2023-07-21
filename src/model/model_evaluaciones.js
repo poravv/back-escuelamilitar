@@ -44,7 +44,7 @@ const evaluaciones = database.define("evaluaciones",{
     }
 },
 {
-    tableName:"Evaluaciones",
+    tableName:"evaluaciones",
     timestamps:false
 })
 

@@ -30,7 +30,7 @@ const vw_det_documentos = database.define("vw_det_documentos",{
     },
 },
 {
-    tableName:"Vw_det_documentos",
+    tableName:"vw_det_documentos",
     timestamps:false
 })
 

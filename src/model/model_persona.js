@@ -66,7 +66,7 @@ const persona = database.define("persona",{
     },
 },
 {
-    tableName:"Persona",
+    tableName:"persona",
     timestamps:false
 })
 

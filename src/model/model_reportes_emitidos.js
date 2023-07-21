@@ -11,7 +11,7 @@ const reportes_emitidos = database.define("reportes_emitidos", {
     idinscripcion: { type: DataTypes.INTEGER,},
     idpersona: { type: DataTypes.INTEGER,},
 }, {
-    tableName: "Reportes_emitidos",
+    tableName: "reportes_emitidos",
     timestamps: false
 })
 

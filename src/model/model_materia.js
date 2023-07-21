@@ -21,7 +21,7 @@ const ciudad = database.define("materia",{
         allowNull:true
     }
 },{
-    tableName:"Materia",
+    tableName:"materia",
     timestamps:false
 })
 

@@ -9,7 +9,6 @@ require("dotenv").config()
 
 routes.get('/getsql/', verificaToken, async (req, res) => {
     const areaes = await database.query('select * from area order by descripcion asc',{type: QueryTypes.SELECT})
-
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});
@@ -25,9 +24,7 @@ routes.get('/getsql/', verificaToken, async (req, res) => {
 
 
 routes.get('/get/', verificaToken, async (req, res) => {
-    
     const areaes = await area.findAll();
-
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});;

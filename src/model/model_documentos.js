@@ -17,7 +17,7 @@ const documentos = database.define("documentos",{
         allowNull:true
     }
 },{
-    tableName:"Documentos",
+    tableName:"documentos",
     timestamps:false
 })
 

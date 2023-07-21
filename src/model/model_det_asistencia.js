@@ -29,7 +29,7 @@ const det_asistencia=database.define("det_asistencia",{
     },
 
 },{
-    tableName:"Det_asistencia",
+    tableName:"det_asistencia",
     timestamps:false
 })
 

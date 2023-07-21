@@ -40,7 +40,7 @@ const planificacion=database.define("planificacion",{
         allowNull:false
     },
 },{
-    tableName:"Planificacion",
+    tableName:"planificacion",
     timestamps:false
 })
 
