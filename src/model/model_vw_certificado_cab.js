@@ -3,6 +3,8 @@ const database = require("../database")
 
 const vw_certificado_cab = database.define("vw_certificado_cab", {
     idinscripcion: { type: DataTypes.INTEGER,primaryKey: true },
+    grado: { type: DataTypes.STRING },
+    armas: { type: DataTypes.STRING },
     nombres: { type: DataTypes.STRING,},
     documento: { type: DataTypes.STRING },
     fnacimiento: { type: DataTypes.DATE,},

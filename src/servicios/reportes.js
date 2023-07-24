@@ -1,14 +1,8 @@
 const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
-//const vw_reporte_gral = require("../model/model_vw_reporte_general")
 const vw_reporte_mat = require("../model/model_vw_reporte_materia")
 const vw_certificado_cab = require("../model/model_vw_certificado_cab")
-//const convocatoria = require("../model/model_convocatoria")
-//const vw_convocatoria = require("../model/model_vwconvocatoria")
-//const planificacion = require("../model/model_planificacion")
-//const curso = require("../model/model_curso")
-//const turno = require("../model/model_turno")
 const database = require('../database')
 const { QueryTypes } = require("sequelize")
 const verificaToken = require('../middleware/token_extractor');

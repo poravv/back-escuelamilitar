@@ -3,6 +3,8 @@ const database = require("../database")
 
 const vw_reporte_mat = database.define("vw_reporte_materia", {
     numero: { type: DataTypes.INTEGER,primaryKey: true },
+    grado: { type: DataTypes.STRING },
+    armas: { type: DataTypes.STRING },
     nombre: { type: DataTypes.STRING, },
     apellido: { type: DataTypes.STRING, },
     documento: { type: DataTypes.STRING, },
