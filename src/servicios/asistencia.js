@@ -81,7 +81,6 @@ routes.get('/get/:idasistencia', verificaToken, async (req, res) => {
 
 routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
-    
     try {
         const asistenciaes = await asistencia.create(req.body, {
             transaction: t
@@ -107,7 +106,6 @@ routes.post('/post/', verificaToken, async (req, res) => {
 })
 
 routes.put('/put/:idasistencia', verificaToken, async (req, res) => {
-
     const t = await database.transaction();
     try {
         const asistenciaes = await asistencia.update(req.body, { where: { idasistencia: req.params.idasistencia } }, {

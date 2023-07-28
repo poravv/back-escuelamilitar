@@ -28,12 +28,16 @@ const vw_certificado_cab = database.define("vw_certificado_cab", {
     letra_promedio: { type: DataTypes.STRING,},
     sucursal: { type: DataTypes.STRING,},
     img: { type:DataTypes.BLOB("long")},
+    director_grado: { type: DataTypes.STRING,},
     director: { type: DataTypes.STRING,},
     cargo: { type: DataTypes.STRING,},
+    grado_academico: { type: DataTypes.STRING,},
+    director_academico: { type: DataTypes.STRING,},
+    cargo_academico: { type: DataTypes.STRING,},
     idtesis: { type: DataTypes.INTEGER,},
 }, {
     tableName: "vw_certificado_cab",
     timestamps: false
 })
 
-module.exports = vw_certificado_cab
+module.exports = vw_certificado_cab;

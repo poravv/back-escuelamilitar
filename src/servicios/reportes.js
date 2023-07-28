@@ -47,9 +47,9 @@ routes.get('/getreportegral/:idconvocatoria/', verificaToken, async (req, res) =
             else { res.json({ mensaje: "successfully", authData: authData, body: rs_evaluaciones }) }
         });
     } catch (err) {
-         res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
-         //console.log(err)
-        }
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+        //console.log(err)
+    }
 })
 
 
@@ -72,17 +72,61 @@ routes.get('/getcertevaluacion/:idconvocatoria/:idinscripcion', verificaToken, a
     }
 })
 
+routes.get('/getevalmat/:idconvocatoria/:idmateria/:tipo', verificaToken, async (req, res) => {
+    try {
+        console.log(req.params.idconvocatoria,req.params.idmateria,req.params.tipo)
+        await database.query(`select * from vw_evaluacion_acta where idconvocatoria= ${req.params.idconvocatoria} and idmateria=${req.params.idmateria} `, { type: QueryTypes.SELECT }).then((rs_evaluaciones) => {
+            //console.log(rs_evaluaciones)
+            jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+                if (err) {
+                    res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
+                } else {
+                    res.json({
+                        mensaje: "successfully",
+                        authData: authData,
+                        body: rs_evaluaciones
+                    })
+                }
+            })
+        });
+    } catch (error) {
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+    }
+})
+
+routes.get('/getactacab/:idconvocatoria/:idmateria', verificaToken, async (req, res) => {
+    try {
+        console.log(req.params.idconvocatoria,req.params.idmateria,req.params.tipo)
+        await database.query(`select * from vw_acta_cab where idconvocatoria= ${req.params.idconvocatoria} and idmateria=${req.params.idmateria} `, { type: QueryTypes.SELECT }).then((rs_evaluaciones) => {
+            //console.log(rs_evaluaciones)
+            jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+                if (err) {
+                    res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
+                } else {
+                    res.json({
+                        mensaje: "successfully",
+                        authData: authData,
+                        body: rs_evaluaciones
+                    })
+                }
+            })
+        });
+    } catch (error) {
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+    }
+})
+
 routes.get('/getreportemat/:idconvocatoria/:idmateria', verificaToken, async (req, res) => {
     try {
-        const rs_evaluaciones = await vw_reporte_mat.findAll({ where: { idconvocatoria: req.params.idconvocatoria, idmateria:req.params.idmateria  } });
+        const rs_evaluaciones = await vw_reporte_mat.findAll({ where: { idconvocatoria: req.params.idconvocatoria, idmateria: req.params.idmateria } });
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) { res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err }); }
             else { res.json({ mensaje: "successfully", authData: authData, body: rs_evaluaciones }) }
         });
     } catch (err) {
-         res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
-         //console.log(err)
-        }
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+        //console.log(err)
+    }
 })
 
 routes.get('/getcertcab/:idinscripcion/', verificaToken, async (req, res) => {
@@ -93,9 +137,9 @@ routes.get('/getcertcab/:idinscripcion/', verificaToken, async (req, res) => {
             else { res.json({ mensaje: "successfully", authData: authData, body: rs_evaluaciones }) }
         });
     } catch (err) {
-         res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
-         //console.log(err)
-        }
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+        //console.log(err)
+    }
 })
 
 module.exports = routes;

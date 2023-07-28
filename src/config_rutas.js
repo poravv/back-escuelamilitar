@@ -24,6 +24,7 @@ const turno = require('./servicios/turno')
 const area = require('./servicios/area')
 const tesis = require('./servicios/tesis')
 const usuario = require('./servicios/usuario')
+const cargo = require('./servicios/cargo')
 const aptitud = require('./servicios/aptitud')
 const reportes = require('./servicios/reportes')
 const reportes_emitidos = require('./servicios/reportes_emitidos')
@@ -53,6 +54,7 @@ rutas.use('/empy/api/planificacion',planificacion);
 rutas.use('/empy/api/sucursal',sucursal);
 rutas.use('/empy/api/turno',turno);
 rutas.use('/empy/api/usuario',usuario);
+rutas.use('/empy/api/cargo',cargo);
 rutas.use('/empy/api/reportes',reportes);
 rutas.use('/empy/api/reportes_emitidos',reportes_emitidos);
 

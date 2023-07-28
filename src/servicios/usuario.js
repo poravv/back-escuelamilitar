@@ -10,43 +10,46 @@ const md5 = require('md5')
 require("dotenv").config()
 
 routes.post('/login/', async (req, res) => {
-    
+
     try {
         //console.log(req.body)
         const { usuario, password } = req.body;
-        //console.log( md5(password))
+        console.log(password)
         console.log(usuario);
-        const rsusuario = await usuariomodel.findOne(
-        {where: { usuario: usuario,password: md5(password) },
-            include: [
-                //{ model: sucursal },
-                { model: persona }
-            ]
-        });
-
-        if (rsusuario.length != 0) {
-            jwt.sign({ rsusuario }, process.env.CLAVESECRETA
-                , { expiresIn: '12h' }//Para personalizar el tiempo para expirar
-                , (err, token) => {
-                    return res.json({
-                        "error": "false",
-                        token,
-                        body: rsusuario
-                    });
-                });
-        } else {
-            return res.status(400).json(
-                {
-                    "error": "true",
-                    "mensaje": "Usuario no existe"
+        await usuariomodel.findOne(
+            {
+                where: { usuario: usuario, password: md5(password) },
+                include: [
+                    //{ model: sucursal },
+                    { model: persona }
+                ]
+            }).then((rsusuario) => {
+                console.log('usuario: ', rsusuario)
+                if (rsusuario != 0) {
+                    jwt.sign({ rsusuario }, process.env.CLAVESECRETA
+                        , { expiresIn: '12h' }//Para personalizar el tiempo para expirar
+                        , (err, token) => {
+                            return res.json({
+                                "error": "false",
+                                token,
+                                body: rsusuario
+                            });
+                        });
+                } else {
+                    return res.status(400).json(
+                        {
+                            "error": "true",
+                            "mensaje": "Usuario no existe"
+                        }
+                    );
                 }
-            );
-        }
+            });
+
     } catch (error) {
         return res.status(400).json(
             {
                 "error": "true",
-                "mensaje": "Error de login"
+                "mensaje": `Error de login: ${error}`
             }
         );
     }
@@ -96,7 +99,7 @@ routes.get('/get/:idusuario', verificaToken, async (req, res) => {
 
 routes.post('/post/', verificaToken, async (req, res) => {
     const t = await database.transaction();
-    req.body.password=md5(req.body.password);
+    req.body.password = md5(req.body.password);
     try {
         const usuarios = await usuariomodel.create(req.body, { transaction: t })
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
@@ -121,19 +124,19 @@ routes.post('/post/', verificaToken, async (req, res) => {
 routes.put('/put/:idusuario', verificaToken, async (req, res) => {
     const t = await database.transaction();
     //console.log(req.body)
-    req.body.password=md5(req.body.password);
+    req.body.password = md5(req.body.password);
     try {
-        await usuariomodel.update(req.body, { where: { idusuario: req.params.idusuario,password:md5(req.body.passwordAnterior) }, transaction: t }).then((rs) =>{
-            console.log('RS: ',rs)
+        await usuariomodel.update(req.body, { where: { idusuario: req.params.idusuario, password: md5(req.body.passwordAnterior) }, transaction: t }).then((rs) => {
+            console.log('RS: ', rs)
             jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
                 if (err) {
                     res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
                 } else {
                     //console.log(rs)
-                    if(rs[0]===0){
+                    if (rs[0] === 0) {
                         //console.log('Error')
                         res.json({ error: "Error de Contraseña Actual" });
-                    }else{
+                    } else {
                         //console.log('Actualizado')
                         t.commit();
                         res.json({
@@ -142,12 +145,12 @@ routes.put('/put/:idusuario', verificaToken, async (req, res) => {
                             body: rs
                         })
                     }
-    
-                    
+
+
                 }
             })
         });
-        
+
     } catch (error) {
         res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
         t.rollback();

@@ -52,7 +52,7 @@ const vw_convocatoria=database.define("vw_convocatoria",{
     },
     modalidad: {
         type: DataTypes.STRING
-    }
+    },
 },{
     tableName:"vw_convocatoria",
     timestamps:false
