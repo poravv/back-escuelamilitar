@@ -31,7 +31,6 @@ const sucursal=database.define("sucursal",{
         type: DataTypes.INTEGER,
         allowNull:false
     },
-    
 },{
     tableName:"sucursal",
     timestamps:false

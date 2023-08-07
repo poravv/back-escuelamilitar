@@ -16,6 +16,10 @@ const area = database.define("area",{
         type:DataTypes.STRING,
         //allowNull:false
     },
+    sublinea:{
+        type:DataTypes.STRING,
+        //allowNull:true
+    },
     estado:{
         type:DataTypes.STRING,
         //allowNull:true
