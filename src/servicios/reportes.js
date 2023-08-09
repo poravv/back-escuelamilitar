@@ -129,6 +129,19 @@ routes.get('/getreportemat/:idconvocatoria/:idmateria', verificaToken, async (re
     }
 })
 
+routes.get('/getcertificado1ro/:idinscripcion', verificaToken, async (req, res) => {
+    try {
+        const rs_evaluaciones = await database.query(`select * from vw_certificado_1ro where idinscripcion= ${req.params.idinscripcion} `, { type: QueryTypes.SELECT })
+        jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+            if (err) { res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err }); }
+            else { res.json({ mensaje: "successfully", authData: authData, body: rs_evaluaciones }) }
+        });
+    } catch (err) {
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+        //console.log(err)
+    }
+})
+
 routes.get('/getcertcab/:idinscripcion/', verificaToken, async (req, res) => {
     try {
         const rs_evaluaciones = await vw_certificado_cab.findAll({ where: { idinscripcion: req.params.idinscripcion } });

@@ -14,8 +14,8 @@ routes.post('/login/', async (req, res) => {
     try {
         //console.log(req.body)
         const { usuario, password } = req.body;
-        console.log(password)
-        console.log(usuario);
+        //console.log(password)
+        //console.log(usuario);
         await usuariomodel.findOne(
             {
                 where: { usuario: usuario, password: md5(password) },
