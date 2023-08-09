@@ -1,6 +1,7 @@
 const express = require('express');
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
+const cargos = require("../model/model_cargos")
 const database = require('../database')
 const{QueryTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
@@ -22,7 +23,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
 })
 
 routes.get('/getcargo/', verificaToken, async (req, res) => {
-    const ciudades = await database.query('select * from cargos',{type: QueryTypes.SELECT})
+    const ciudades = await database.query(`select * from cargos where estado='AC'`,{type: QueryTypes.SELECT})
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});
@@ -58,6 +59,7 @@ routes.post('/post/', verificaToken, async (req, res) => {
         res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador"});
     }
 })
+
 
 
 routes.put('/put/', verificaToken, async (req, res) => {
