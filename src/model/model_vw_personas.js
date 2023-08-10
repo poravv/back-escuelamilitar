@@ -54,6 +54,9 @@ const vw_personas = database.define("vw_personas",{
         type:DataTypes.STRING,
         allowNull:false
     },
+    registro:{
+        type:DataTypes.STRING,
+    },
     idciudad:{
         type:DataTypes.INTEGER,
         allowNull:false

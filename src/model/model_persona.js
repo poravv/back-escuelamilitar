@@ -56,6 +56,9 @@ const persona = database.define("persona",{
         type:DataTypes.STRING,
         allowNull:false
     },
+    registro:{
+        type:DataTypes.STRING,
+    },
     idciudad:{
         type:DataTypes.INTEGER,
         allowNull:false

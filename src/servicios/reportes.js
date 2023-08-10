@@ -116,6 +116,50 @@ routes.get('/getactacab/:idconvocatoria/:idmateria', verificaToken, async (req, 
     }
 })
 
+routes.get('/getEstudiantes/:idconvocatoria', verificaToken, async (req, res) => {
+    try {
+        console.log(req.params.idconvocatoria,req.params.idmateria,req.params.tipo)
+        await database.query(`select * from vw_estudiantes_cert where idconvocatoria= ${req.params.idconvocatoria} `, { type: QueryTypes.SELECT }).then((rs_evaluaciones) => {
+            //console.log(rs_evaluaciones)
+            jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+                if (err) {
+                    res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
+                } else {
+                    res.json({
+                        mensaje: "successfully",
+                        authData: authData,
+                        body: rs_evaluaciones
+                    })
+                }
+            })
+        });
+    } catch (error) {
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+    }
+})
+
+routes.get('/getrescabena/:idconvocatoria', verificaToken, async (req, res) => {
+    try {
+        console.log(req.params.idconvocatoria,req.params.idmateria,req.params.tipo)
+        await database.query(`select * from vw_res_ena_cab where idconvocatoria= ${req.params.idconvocatoria} `, { type: QueryTypes.SELECT }).then((rs_evaluaciones) => {
+            //console.log(rs_evaluaciones)
+            jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+                if (err) {
+                    res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
+                } else {
+                    res.json({
+                        mensaje: "successfully",
+                        authData: authData,
+                        body: rs_evaluaciones
+                    })
+                }
+            })
+        });
+    } catch (error) {
+        res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
+    }
+})
+
 routes.get('/getreportemat/:idconvocatoria/:idmateria', verificaToken, async (req, res) => {
     try {
         const rs_evaluaciones = await vw_reporte_mat.findAll({ where: { idconvocatoria: req.params.idconvocatoria, idmateria: req.params.idmateria } });
