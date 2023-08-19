@@ -151,7 +151,7 @@ routes.delete('/del/:idasistencia', verificaToken, async (req, res) => {
             }
         })
     } catch (er) {
-        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador,",err});
+        res.json({error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador,",er});
         t.rollback();
     }
 })
