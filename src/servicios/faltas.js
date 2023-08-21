@@ -54,9 +54,9 @@ routes.get('/get/', verificaToken, async (req, res) => {
 routes.get('/getfaltasinst/:idusuario', verificaToken, async (req, res) => {
 
     try {
-        console.log(req.params.idusuario)        
+        //console.log(req.params.idusuario)        
         //const rsfaltas = await vwfaltas.findAll({ idusuario: req.params.idusuario });
-        const rsfaltas = await database.query(`select * from vw_faltas where idusuario=${req.params.idusuario}`, { type: QueryTypes.SELECT })
+        const rsfaltas = await database.query(`select * from vw_faltas`, { type: QueryTypes.SELECT })
 
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
