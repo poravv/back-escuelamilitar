@@ -37,7 +37,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
             {
                 model: convocatoria,where:{estado:'AC'}, include: [
                     {
-                        model: planificacion, include: [
+                        model: planificacion,where:{estado:'AC'}, include: [
                             { model: curso },
                         ]
                     },
