@@ -2,6 +2,7 @@ const{DataTypes}=require("sequelize")
 const database = require("../database")
 const convocatoria=require("./model_convocatoria")
 const persona=require("./model_persona")
+const vw_personas = require("./model_vw_personas")
 
 const inscripcion=database.define("inscripcion",{
     idinscripcion:{
@@ -39,6 +40,12 @@ const inscripcion=database.define("inscripcion",{
 
 
 inscripcion.hasOne(persona,{
+    foreignKey:"idpersona",
+    primaryKey:"idpersona",
+    sourceKey:"idpersona"
+})
+
+inscripcion.hasOne(vw_personas,{
     foreignKey:"idpersona",
     primaryKey:"idpersona",
     sourceKey:"idpersona"

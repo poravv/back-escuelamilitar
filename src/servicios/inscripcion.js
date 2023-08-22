@@ -8,7 +8,8 @@ const planificacion = require("../model/model_planificacion")
 const curso = require("../model/model_curso")
 const database = require('../database')
 const { QueryTypes } = require("sequelize")
-const verificaToken = require('../middleware/token_extractor')
+const verificaToken = require('../middleware/token_extractor');
+const vw_personas = require('../model/model_vw_personas');
 require("dotenv").config()
 
 
@@ -33,7 +34,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
 
     const inscripciones = await inscripcion.findAll({
         include: [
-            { model: persona },
+            { model: vw_personas },
             {
                 model: convocatoria,where:{estado:'AC'}, include: [
                     {
