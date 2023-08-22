@@ -71,7 +71,7 @@ routes.get('/getconv/:idconvocatoria', verificaToken, async (req, res) => {
     const inscripciones = await inscripcion.findAll({
         where: { idconvocatoria: req.params.idconvocatoria },
         include: [
-            { model: persona },
+            { model: vw_personas },
             {
                 model: convocatoria, include: [
                     {
