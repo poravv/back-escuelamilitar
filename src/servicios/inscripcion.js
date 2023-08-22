@@ -5,6 +5,7 @@ const inscripcion = require("../model/model_inscripcion")
 const persona = require("../model/model_persona")
 const convocatoria = require("../model/model_convocatoria")
 const planificacion = require("../model/model_planificacion")
+const grados_arma = require("../model/model_grados_arma")
 const curso = require("../model/model_curso")
 const database = require('../database')
 const { QueryTypes } = require("sequelize")
@@ -36,9 +37,9 @@ routes.get('/get/', verificaToken, async (req, res) => {
         include: [
             { model: persona },
             {
-                model: convocatoria,where:{estado:'AC'}, include: [
+                model: convocatoria, where: { estado: 'AC' }, include: [
                     {
-                        model: planificacion,where:{estado:'AC'}, include: [
+                        model: planificacion, where: { estado: 'AC' }, include: [
                             { model: curso },
                         ]
                     },
@@ -71,7 +72,7 @@ routes.get('/getconv/:idconvocatoria', verificaToken, async (req, res) => {
     const inscripciones = await inscripcion.findAll({
         where: { idconvocatoria: req.params.idconvocatoria },
         include: [
-            { model: persona },
+            { model: persona, include: [{ model: grados_arma }] },
             {
                 model: convocatoria, include: [
                     {
