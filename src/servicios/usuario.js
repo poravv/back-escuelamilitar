@@ -58,8 +58,14 @@ routes.post('/login/', async (req, res) => {
 routes.get('/get/', verificaToken, async (req, res) => {
     const usuarios = await usuariomodel.findAll({
         include: [
-            { model: sucursal },
-            { model: persona }
+            {
+                model: sucursal,
+                attributes: ['idsucursal', 'sucursal', 'ruc', 'direccion', 'estado', 'idciudad']
+            },
+            {
+                model: persona,
+                attributes: [`idpersona`,`nombre`,`apellido`,`fnacimiento`,`sexo`,`documento`,`estado`,`direccion`,`tipo_doc`,`nacionalidad`,`correo`,`telefono`,`registro`,`idgrados_arma`,`idciudad`]
+            }
         ]
     })
 
