@@ -64,7 +64,7 @@ routes.get('/get/', verificaToken, async (req, res) => {
             },
             {
                 model: persona,
-                attributes: [`idpersona`,`nombre`,`apellido`,`fnacimiento`,`sexo`,`documento`,`estado`,`direccion`,`tipo_doc`,`nacionalidad`,`correo`,`telefono`,`registro`,`idgrados_arma`,`idciudad`]
+                attributes: [`idpersona`, `nombre`, `apellido`, `fnacimiento`, `sexo`, `documento`, `estado`, `direccion`, `tipo_doc`, `nacionalidad`, `correo`, `telefono`, `registro`, `idgrados_arma`, `idciudad`]
             }
         ]
     })
@@ -129,28 +129,32 @@ routes.post('/post/', verificaToken, async (req, res) => {
 
 routes.put('/put/:idusuario', verificaToken, async (req, res) => {
     const t = await database.transaction();
-    //console.log(req.body)
+    
     req.body.password = md5(req.body.password);
     try {
-        await usuariomodel.update(req.body, { where: { idusuario: req.params.idusuario, password: md5(req.body.passwordAnterior) }, transaction: t }).then((rs) => {
-            console.log('RS: ', rs)
-            jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
-                if (err) {
-                    res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
-                } else {
-                    if (rs[0] === 0) {
-                        res.json({ error: "Error de Contraseña Actual" });
+        await usuariomodel.findOne({ where: { idusuario: req.params.idusuario, password: md5(req.body.passwordAnterior) } }).then( (user) => {
+
+             usuariomodel.update(req.body, { where: { idusuario: user.idusuario }, transaction: t }).then((rs) => {
+                
+                jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
+                    if (err) {
+                        res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
                     } else {
-                        t.commit();
-                        res.json({
-                            mensaje: "Usuario actualizado correctamente",
-                            authData: authData,
-                            body: rs
-                        })
+                        if (rs[0] === 0) {
+                            res.json({ error: "Error de Contraseña Actual" });
+                        } else {
+                            t.commit();
+                            res.json({
+                                mensaje: "Usuario actualizado correctamente",
+                                authData: authData,
+                                body: rs
+                            })
+                        }
                     }
-                }
-            })
-        });
+                })
+            });
+        })
+
 
     } catch (error) {
         res.json({ error: "Error en el servidor, verifique los campos cargados, sino contacte con el administrador" });
@@ -164,7 +168,7 @@ routes.put('/putname/:idusuario', verificaToken, async (req, res) => {
     delete req.body.passwordAnterior;
     try {
         await usuariomodel.update(req.body, { where: { idusuario: req.params.idusuario }, transaction: t }).then((rs) => {
-            
+
             jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
                 if (err) {
                     res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
@@ -197,11 +201,11 @@ routes.put('/reset/:idusuario', verificaToken, async (req, res) => {
                     res.json({ error: "Error de autenticacion, vuelva a iniciar la sesion, sino, contacte con el administrador", err });
                 } else {
                     t.commit();
-                        res.json({
-                            mensaje: "Usuario actualizado correctamente",
-                            authData: authData,
-                            body: rs
-                        })
+                    res.json({
+                        mensaje: "Usuario actualizado correctamente",
+                        authData: authData,
+                        body: rs
+                    })
                 }
             })
         });
