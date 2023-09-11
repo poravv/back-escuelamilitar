@@ -188,9 +188,9 @@ routes.put('/putname/:idusuario', verificaToken, async (req, res) => {
 routes.put('/reset/:idusuario', verificaToken, async (req, res) => {
     const t = await database.transaction();
     //console.log(req.body)
-    req.body.password = md5('reseteado');
+    let password = md5('reseteado');
     try {
-        await usuariomodel.update(req.body, { where: { idusuario: req.params.idusuario }, transaction: t }).then((rs) => {
+        await usuariomodel.update({password}, { where: { idusuario: req.params.idusuario }, transaction: t }).then((rs) => {
             //console.log('RS: ', rs)
             jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
                 if (err) {
