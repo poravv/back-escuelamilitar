@@ -7,8 +7,8 @@ const{QueryTypes}=require("sequelize")
 const verificaToken = require('../middleware/token_extractor')
 require("dotenv").config()
 
-routes.get('/get/', verificaToken, async (req, res) => {
-    const ciudades = await database.query('select * from vw_persona_cargos',{type: QueryTypes.SELECT})
+routes.get('/get/:idsucursal', verificaToken, async (req, res) => {
+    const ciudades = await database.query(`select * from vw_persona_cargos where idsucursal= ${req.params.idsucursal}`,{type: QueryTypes.SELECT})
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});
@@ -22,8 +22,8 @@ routes.get('/get/', verificaToken, async (req, res) => {
     })
 })
 
-routes.get('/getcargo/', verificaToken, async (req, res) => {
-    const ciudades = await database.query(`select * from cargos where estado='AC'`,{type: QueryTypes.SELECT})
+routes.get('/getcargo/:idsucursal', verificaToken, async (req, res) => {
+    const ciudades = await database.query(`select * from cargos where estado='AC' where idsucursal= ${req.params.idsucursal}`,{type: QueryTypes.SELECT})
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});
@@ -38,10 +38,9 @@ routes.get('/getcargo/', verificaToken, async (req, res) => {
 })
 
 routes.post('/post/', verificaToken, async (req, res) => {
-
-    const {idpersona,idcargos,idanho_lectivo} = req.body;
+    const {idpersona,idcargos,idanho_lectivo,idsucursal} = req.body;
     try {
-        const ciudades = await database.query(`insert into persona_cargos (idpersona,idcargos,idanho_lectivo,estado) values (${idpersona},${idcargos},${idanho_lectivo},'AC')`,{type: QueryTypes.INSERT});
+        const ciudades = await database.query(`insert into persona_cargos (idpersona,idcargos,idanho_lectivo,estado,idsucursal) values (${idpersona},${idcargos},${idanho_lectivo},'AC',${idsucursal})`,{type: QueryTypes.INSERT});
 
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
@@ -64,9 +63,9 @@ routes.post('/post/', verificaToken, async (req, res) => {
 
 routes.put('/put/', verificaToken, async (req, res) => {
 
-    const {idpersona,idcargos,idanho_lectivo,estado} = req.body;
+    const {idpersona,idcargos,idanho_lectivo,estado,idsucursal} = req.body;
     try {
-        const ciudades = await database.query(`update persona_cargos set estado = '${estado}' where idpersona= ${idpersona} and idcargos = ${idcargos} and idanho_lectivo= ${idanho_lectivo}`,{type: QueryTypes.UPDATE});
+        const ciudades = await database.query(`update persona_cargos set estado = '${estado}' where idpersona= ${idpersona} and idcargos = ${idcargos} and idanho_lectivo= ${idanho_lectivo} and idsucursal=${idsucursal}`,{type: QueryTypes.UPDATE});
 
         jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
             if (err) {
