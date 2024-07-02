@@ -22,8 +22,8 @@ routes.get('/get/:idsucursal', verificaToken, async (req, res) => {
     })
 })
 
-routes.get('/getcargo/:idsucursal', verificaToken, async (req, res) => {
-    const ciudades = await database.query(`select * from cargos where estado='AC' where idsucursal= ${req.params.idsucursal}`,{type: QueryTypes.SELECT})
+routes.get('/getcargo/', verificaToken, async (req, res) => {
+    const ciudades = await database.query(`select * from cargos where estado='AC'`,{type: QueryTypes.SELECT})
     jwt.verify(req.token, process.env.CLAVESECRETA, (err, authData) => {
         if (err) {
             res.json({error: "Error ",err});
